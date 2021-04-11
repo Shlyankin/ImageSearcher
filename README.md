@@ -1,6 +1,8 @@
 # ImageSearcher in develop
 
-Code-style Pet-project
+Code-style Pet-project.
+
+For building project you need to create apikeys.properties with 2 values "unsplash.AccessKey" and "unsplash.SecretKey"
 
 Tasks:
 1) Create Model Layer with Paging (in progress)
