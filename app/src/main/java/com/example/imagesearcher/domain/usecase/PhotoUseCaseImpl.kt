@@ -1,3 +1,20 @@
 package com.example.imagesearcher.domain.usecase
 
-class PhotoUseCaseImpl : PhotoUseCase
+import android.util.Log
+import com.example.imagesearcher.domain.model.Photo
+import com.example.imagesearcher.domain.repo.PhotoRepo
+import kotlinx.coroutines.flow.MutableStateFlow
+
+class PhotoUseCaseImpl(
+    private val photoRepo: PhotoRepo
+) : PhotoUseCase {
+    override val photos = MutableStateFlow<List<Photo>>(emptyList())
+
+    override suspend fun updatePhotos(page: Int) {
+        try {
+            photos.value = photoRepo.getPhotos(page)
+        } catch (e: Exception) {
+            Log.e("", "$e")
+        }
+    }
+}

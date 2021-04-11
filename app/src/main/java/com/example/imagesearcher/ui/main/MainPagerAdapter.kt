@@ -14,8 +14,8 @@ class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activi
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            PagerFragments.FAVOURITE_PHOTOS.ordinal -> FavouritePhotosFragment()
             PagerFragments.PHOTOS.ordinal -> PhotosFragment()
+            PagerFragments.FAVOURITE_PHOTOS.ordinal -> FavouritePhotosFragment()
             else -> throw Exception("Check ${MainPagerAdapter::class}, cause adapters position is $position, but adapter has only ${PagerFragments.values().size} items")
         }
     }

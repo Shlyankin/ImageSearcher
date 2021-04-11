@@ -1,5 +1,6 @@
 package com.example.imagesearcher.di
 
+import com.example.imagesearcher.domain.net.HeaderInterceptor
 import com.example.imagesearcher.domain.net.UnsplashApi
 import com.example.imagesearcher.utils.DEFAULT_DATETIME_FORMAT
 import com.google.gson.Gson
@@ -15,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetModule {
+class NetModule {
 
     @Provides
     fun provideUnsplashApi(okHttpClient: OkHttpClient, gson: Gson): UnsplashApi {
@@ -31,15 +32,23 @@ object NetModule {
     fun provideGson(): Gson = GsonBuilder().setDateFormat(DEFAULT_DATETIME_FORMAT).create()
 
     @Provides
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        headerInterceptor: HeaderInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(headerInterceptor)
             .build()
     }
 
     @Provides
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor? {
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+    }
+
+    @Provides
+    fun provideHeaderInterceptor(): HeaderInterceptor {
+        return HeaderInterceptor()
     }
 }
