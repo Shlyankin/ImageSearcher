@@ -3,8 +3,8 @@ package com.example.imagesearcher.ui.main
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.imagesearcher.ui.photos.FavouritePhotosFragment
 import com.example.imagesearcher.ui.photos.PhotosFragment
+import com.example.imagesearcher.ui.photos.favourite.FavouritePhotosFragment
 
 class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
