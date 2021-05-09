@@ -8,5 +8,6 @@ data class UiPhoto(
     val createdAt: Date,
     val description: String,
     val urls: PhotoUrls,
-    val user: User
+    val user: User,
+    var isFavourite: Boolean = false
 )
