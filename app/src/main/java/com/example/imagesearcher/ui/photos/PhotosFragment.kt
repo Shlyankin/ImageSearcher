@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.imagesearcher.databinding.FPhotosBinding
 import com.example.imagesearcher.ui.BindingFragment
 import com.xwray.groupie.GroupieAdapter

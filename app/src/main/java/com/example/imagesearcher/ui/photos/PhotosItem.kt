@@ -4,10 +4,10 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.imagesearcher.R
 import com.example.imagesearcher.databinding.ItemPhotoBinding
-import com.example.imagesearcher.domain.model.Photo
+import com.example.imagesearcher.domain.model.ui.UiPhoto
 import com.xwray.groupie.viewbinding.BindableItem
 
-class PhotosItem(private val photo: Photo) : BindableItem<ItemPhotoBinding>() {
+class PhotosItem(private val photo: UiPhoto) : BindableItem<ItemPhotoBinding>() {
 
     override fun bind(viewBinding: ItemPhotoBinding, position: Int) {
         viewBinding.run {

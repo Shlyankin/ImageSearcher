@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 @Entity
-data class Photo(
+open class PhotoEntity(
     @PrimaryKey
     val id: String,
     @SerializedName("created_at")
