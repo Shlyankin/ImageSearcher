@@ -11,6 +11,7 @@ import com.example.imagesearcher.domain.repo.FavouriteRepo
 import com.example.imagesearcher.domain.repo.FavouriteRepoImpl
 import com.example.imagesearcher.domain.repo.PhotoRepo
 import com.example.imagesearcher.domain.repo.PhotoRepoImpl
+import com.example.imagesearcher.manager.FileManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,6 +45,7 @@ class DatabaseModule {
     @Provides
     fun provideFavouriteRepo(
         favouritePhotoDao: FavouritePhotoDao,
-        photoAdapter: PhotoAdapter
-    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, photoAdapter)
+        photoAdapter: PhotoAdapter,
+        fileManager: FileManager
+    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, photoAdapter, fileManager)
 }

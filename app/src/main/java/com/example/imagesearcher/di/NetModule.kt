@@ -1,5 +1,6 @@
 package com.example.imagesearcher.di
 
+import com.example.imagesearcher.domain.net.FileApi
 import com.example.imagesearcher.domain.net.HeaderInterceptor
 import com.example.imagesearcher.domain.net.UnsplashApi
 import com.example.imagesearcher.utils.DEFAULT_DATETIME_FORMAT
@@ -17,6 +18,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 @InstallIn(SingletonComponent::class)
 class NetModule {
+
+    @Provides
+    fun provideFileApi(okHttpClient: OkHttpClient): FileApi {
+        return Retrofit.Builder()
+            .baseUrl(UnsplashApi.BASE_URL)
+            .client(okHttpClient)
+            .build()
+            .create(FileApi::class.java)
+    }
 
     @Provides
     fun provideUnsplashApi(okHttpClient: OkHttpClient, gson: Gson): UnsplashApi {

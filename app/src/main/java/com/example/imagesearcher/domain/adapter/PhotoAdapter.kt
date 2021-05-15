@@ -29,14 +29,14 @@ class PhotoAdapter {
     fun convertFromFavouritePhotoToUiPhoto(photo: List<FavouritePhoto>): List<UiPhoto> =
         photo.map { UiPhoto(it.createdAt, it.description, it.urls, it.user, isFavourite = true) }
 
-    fun convertFromPhotoToFavouritePhoto(photo: PhotoEntity, localPath: String): FavouritePhoto =
+    fun convertFromPhotoToFavouritePhoto(photo: PhotoEntity, localName: String): FavouritePhoto =
         FavouritePhoto(
             photo.id,
             photo.createdAt,
             photo.description,
             photo.urls,
             photo.user,
-            localPath
+            localName
         )
 
 }

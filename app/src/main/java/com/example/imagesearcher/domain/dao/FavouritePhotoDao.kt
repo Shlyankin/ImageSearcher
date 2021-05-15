@@ -6,12 +6,15 @@ import com.example.imagesearcher.domain.model.FavouritePhoto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FavouritePhotoDao: BaseDao<FavouritePhoto> {
+interface FavouritePhotoDao : BaseDao<FavouritePhoto> {
 
     @Query("SELECT * FROM FavouritePhoto")
     fun getAll(): Flow<List<FavouritePhoto>>
 
     @Query("DELETE FROM FavouritePhoto where id = :id")
     suspend fun deleteById(id: String)
+
+    @Query("SELECT * FROM FavouritePhoto")
+    suspend fun getAllSusp(): List<FavouritePhoto>
 
 }

@@ -3,6 +3,7 @@ package com.example.imagesearcher.domain.net
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+
 interface UnsplashApi {
 
     companion object {

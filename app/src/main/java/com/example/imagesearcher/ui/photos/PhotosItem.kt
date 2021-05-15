@@ -7,7 +7,10 @@ import com.example.imagesearcher.databinding.ItemPhotoBinding
 import com.example.imagesearcher.domain.model.ui.UiPhoto
 import com.xwray.groupie.viewbinding.BindableItem
 
-class PhotosItem(private val photo: UiPhoto) : BindableItem<ItemPhotoBinding>() {
+class PhotosItem(
+    private val photo: UiPhoto,
+    var onFavouriteClickListener: (position: Int, photo: UiPhoto) -> Unit = { _, _ -> }
+) : BindableItem<ItemPhotoBinding>() {
 
     override fun bind(viewBinding: ItemPhotoBinding, position: Int) {
         viewBinding.run {
@@ -19,6 +22,16 @@ class PhotosItem(private val photo: UiPhoto) : BindableItem<ItemPhotoBinding>() 
                 .error(R.drawable.ic_error)
                 .centerCrop()
                 .into(image)
+            addToFavourite.setImageResource(
+                if (photo.isFavourite) {
+                    R.drawable.ic_favourite
+                } else {
+                    R.drawable.ic_empty_favourite
+                }
+            )
+            addToFavourite.setOnClickListener {
+                onFavouriteClickListener.invoke(position, photo)
+            }
         }
     }
 

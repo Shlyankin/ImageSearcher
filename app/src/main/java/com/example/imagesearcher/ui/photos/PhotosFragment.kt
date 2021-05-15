@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PhotosFragment : BindingFragment<FPhotosBinding>() {
 
-    private val photosViewModel by viewModels<PhotosViewModel>()
+    private val viewModel by viewModels<PhotosViewModel>()
     private val photosAdapter by lazy { GroupieAdapter() }
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
@@ -42,8 +42,10 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
 
     private fun observeViewModel() {
         lifecycleScope.launch {
-            photosViewModel.photos.collect {
-                photosAdapter.updateAsync(it.map { photo -> PhotosItem(photo) })
+            viewModel.photos.collect {
+                photosAdapter.updateAsync(it.map { photo ->
+                    PhotosItem(photo, viewModel::addToFavouriteClicked)
+                })
             }
         }
     }

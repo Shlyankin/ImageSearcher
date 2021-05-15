@@ -1,17 +1,54 @@
 package com.example.imagesearcher.ui.photos.favourite
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.imagesearcher.databinding.FPhotosBinding
 import com.example.imagesearcher.ui.BindingFragment
+import com.example.imagesearcher.ui.photos.PhotosItem
+import com.xwray.groupie.GroupieAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FavouritePhotosFragment : BindingFragment<FPhotosBinding>() {
 
-    private val photosViewModel by viewModels<FavouritePhotosViewModel>()
+    private val viewModel by viewModels<FavouritePhotosViewModel>()
+    private val photosAdapter by lazy { GroupieAdapter() }
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FPhotosBinding.inflate(inflater, container, false)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeViewModel()
+    }
+
+    override fun FPhotosBinding.onInitViews() {
+        photos.adapter = photosAdapter
+        photos.layoutManager = LinearLayoutManager(requireContext())
+        photos.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.HORIZONTAL
+            )
+        )
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.favouritePhotos.collect {
+                photosAdapter.updateAsync(it.map { photo ->
+                    PhotosItem(photo, viewModel::addToFavouriteClicked)
+                })
+            }
+        }
+    }
 }

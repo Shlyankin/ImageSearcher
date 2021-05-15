@@ -12,7 +12,7 @@ open class PhotoEntity(
     val id: String,
     @SerializedName("created_at")
     val createdAt: Date,
-    val description: String,
+    val description: String?,
     @Embedded
     val urls: PhotoUrls,
     @Embedded(prefix = "user")

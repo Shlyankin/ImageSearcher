@@ -7,10 +7,10 @@ import java.util.*
 class FavouritePhoto(
     id: String,
     createdAt: Date,
-    description: String,
+    description: String?,
     urls: PhotoUrls,
     user: User,
-    val localPath: String
+    val localName: String
 ) : PhotoEntity(
     id,
     createdAt,

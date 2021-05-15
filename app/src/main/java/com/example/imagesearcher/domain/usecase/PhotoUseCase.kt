@@ -1,10 +1,10 @@
 package com.example.imagesearcher.domain.usecase
 
 import com.example.imagesearcher.domain.model.PhotoEntity
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface PhotoUseCase {
-    val photos: Flow<List<PhotoEntity>>
+    val photos: StateFlow<List<PhotoEntity>>
 
     suspend fun updatePhotos(page: Int)
 }
