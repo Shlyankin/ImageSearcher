@@ -3,7 +3,6 @@ package com.example.imagesearcher.domain.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.imagesearcher.BuildConfig
 import com.example.imagesearcher.domain.converters.DateConverter
 import com.example.imagesearcher.domain.dao.FavouritePhotoDao
 import com.example.imagesearcher.domain.dao.PhotoDao
@@ -15,7 +14,8 @@ import com.example.imagesearcher.domain.model.PhotoEntity
         PhotoEntity::class,
         FavouritePhoto::class,
     ],
-    version = BuildConfig.VERSION_CODE
+    exportSchema = true,
+    version = 10
 )
 @TypeConverters(DateConverter::class)
 abstract class ImageSearcherDatabase : RoomDatabase() {

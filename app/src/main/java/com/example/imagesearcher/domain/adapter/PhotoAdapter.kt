@@ -6,28 +6,45 @@ import com.example.imagesearcher.domain.model.ui.UiPhoto
 
 class PhotoAdapter {
 
-    fun convertFromPhotoToUiPhoto(photo: PhotoEntity, isFavourite: Boolean = false): UiPhoto =
-        UiPhoto(photo.createdAt, photo.description, photo.urls, photo.user, isFavourite)
+    fun convertFromPhotoToUiPhoto(
+        photo: PhotoEntity,
+        localPath: String?,
+        isFavourite: Boolean = false
+    ): UiPhoto =
+        UiPhoto(
+            photo.id,
+            photo.createdAt,
+            photo.description,
+            photo.urls,
+            photo.user,
+            localPath,
+            isFavourite
+        )
 
     fun convertFromPhotoToUiPhoto(
-        photo: List<PhotoEntity>,
+        photos: List<PhotoEntity>,
         favouriteList: List<FavouritePhoto> = emptyList()
     ): List<UiPhoto> =
-        photo.map {
-            UiPhoto(
-                it.createdAt,
-                it.description,
-                it.urls,
-                it.user,
-                isFavourite = it in favouriteList
-            )
+        photos.map { photo ->
+            val favouritePhoto = favouriteList.find { it == photo }
+            convertFromPhotoToUiPhoto(photo, favouritePhoto?.localPath, photo in favouriteList)
         }
 
     fun convertFromFavouritePhotoToUiPhoto(photo: FavouritePhoto): UiPhoto =
-        UiPhoto(photo.createdAt, photo.description, photo.urls, photo.user, isFavourite = true)
+        UiPhoto(
+            photo.id,
+            photo.createdAt,
+            photo.description,
+            photo.urls,
+            photo.user,
+            localPath = photo.localPath,
+            isFavourite = true
+        )
 
     fun convertFromFavouritePhotoToUiPhoto(photo: List<FavouritePhoto>): List<UiPhoto> =
-        photo.map { UiPhoto(it.createdAt, it.description, it.urls, it.user, isFavourite = true) }
+        photo.map {
+            convertFromFavouritePhotoToUiPhoto(it)
+        }
 
     fun convertFromPhotoToFavouritePhoto(photo: PhotoEntity, localName: String): FavouritePhoto =
         FavouritePhoto(

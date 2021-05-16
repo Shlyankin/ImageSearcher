@@ -21,16 +21,24 @@ open class PhotoEntity(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
         other as PhotoEntity
 
         if (id != other.id) return false
+        if (createdAt != other.createdAt) return false
+        if (description != other.description) return false
+        if (urls != other.urls) return false
+        if (user != other.user) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        var result = id.hashCode()
+        result = 31 * result + createdAt.hashCode()
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + urls.hashCode()
+        result = 31 * result + user.hashCode()
+        return result
     }
 }

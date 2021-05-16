@@ -21,13 +21,16 @@ class FileManagerImpl(
     }
 
     override fun downloadFile(url: String, filename: String): File {
-        val localFile = File(favouriteImageFile, filename)
+        val localFile = File(favouriteImageFile, filename).apply {
+            parentFile?.mkdirs()
+            createNewFile()
+        }
         val job = GlobalScope.launch {
             val response = fileApi.downloadFileByUrl(url)
             saveFile(localFile, response)
             downloadQueue.remove(url)
         }
-        downloadQueue.put(url, job)
+        downloadQueue[url] = job
         return localFile
     }
 

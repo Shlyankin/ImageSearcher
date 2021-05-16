@@ -15,6 +15,9 @@ interface FavouritePhotoDao : BaseDao<FavouritePhoto> {
     suspend fun deleteById(id: String)
 
     @Query("SELECT * FROM FavouritePhoto")
-    suspend fun getAllSusp(): List<FavouritePhoto>
+    suspend fun getAllSuspend(): List<FavouritePhoto>
+
+    @Query("SELECT * FROM FavouritePhoto WHERE id=:id")
+    suspend fun getSuspend(id: String): FavouritePhoto?
 
 }

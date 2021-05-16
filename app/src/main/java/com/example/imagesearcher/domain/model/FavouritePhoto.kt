@@ -10,7 +10,7 @@ class FavouritePhoto(
     description: String?,
     urls: PhotoUrls,
     user: User,
-    val localName: String
+    val localPath: String
 ) : PhotoEntity(
     id,
     createdAt,

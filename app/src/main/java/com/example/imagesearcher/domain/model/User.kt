@@ -5,5 +5,5 @@ import androidx.room.Embedded
 data class User(
     val name: String,
     @Embedded
-    val profileImage: ProfileImage
+    val profileImage: ProfileImage?
 )

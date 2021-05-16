@@ -11,8 +11,8 @@ class PhotoUseCaseImpl(
     override val photos = MutableStateFlow<List<PhotoEntity>>(emptyList())
 
     override suspend fun updatePhotos(page: Int) {
-//        photoRepo.getPhotos(page).checkResult {
-//            photos.value = it
-//        }
+        photoRepo.getPhotos(page).checkResult {
+            photos.value = it
+        }
     }
 }

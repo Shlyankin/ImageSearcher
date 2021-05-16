@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.imagesearcher.databinding.FPhotosBinding
 import com.example.imagesearcher.ui.BindingFragment
-import com.example.imagesearcher.ui.photos.PhotosItem
-import com.xwray.groupie.GroupieAdapter
+import com.example.imagesearcher.ui.photos.adapter.PhotosAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ import kotlinx.coroutines.launch
 class FavouritePhotosFragment : BindingFragment<FPhotosBinding>() {
 
     private val viewModel by viewModels<FavouritePhotosViewModel>()
-    private val photosAdapter by lazy { GroupieAdapter() }
+    private val photosAdapter by lazy { PhotosAdapter(viewModel::addToFavouriteClicked) }
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FPhotosBinding.inflate(inflater, container, false)
@@ -45,9 +44,7 @@ class FavouritePhotosFragment : BindingFragment<FPhotosBinding>() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             viewModel.favouritePhotos.collect {
-                photosAdapter.updateAsync(it.map { photo ->
-                    PhotosItem(photo, viewModel::addToFavouriteClicked)
-                })
+                photosAdapter.submitList(it)
             }
         }
     }

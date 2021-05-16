@@ -23,9 +23,9 @@ class PhotosViewModel @Inject constructor(
         photosAdapter.convertFromPhotoToUiPhoto(all, favourite)
     }
 
-    fun addToFavouriteClicked(position: Int, uiPhoto: UiPhoto) {
+    fun addToFavouriteClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch {
-            photosUseCase.photos.value.getOrNull(position)?.let {
+            photosUseCase.photos.value.find { it.id == uiPhoto.id }?.let {
                 if (!uiPhoto.isFavourite) {
                     favouriteUseCase.addToFavourite(it)
                 } else {
