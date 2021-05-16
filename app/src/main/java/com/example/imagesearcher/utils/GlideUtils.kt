@@ -14,7 +14,7 @@ fun RequestManager.loadFileOrUrl(file: File, url: String): RequestBuilder<Drawab
 }
 
 fun RequestManager.loadFileOrUrl(path: String?, url: String): RequestBuilder<Drawable> {
-    return if (path != null && File(path).exists()) {
+    return if (path != null && File(path).exists() && File(path).canWrite() && File(path).canRead()) {
         load(File(path))
     } else {
         load(url)

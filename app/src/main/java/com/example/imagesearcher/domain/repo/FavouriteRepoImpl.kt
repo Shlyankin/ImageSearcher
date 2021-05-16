@@ -17,11 +17,11 @@ class FavouriteRepoImpl(
 
     companion object {
         const val APP_PHOTO_PREFIX = "ImageSearcher_"
-        const val PNG_EXT = ".png"
+        const val JPG_EXT = ".jpg"
     }
 
     override suspend fun addToFavourite(photo: PhotoEntity) {
-        val filename = "$APP_PHOTO_PREFIX${photo.user.name}${photo.id}$PNG_EXT"
+        val filename = "$APP_PHOTO_PREFIX${photo.user.name}${photo.id}$JPG_EXT"
         val localPath = fileManager.downloadFile(photo.urls.full, filename).path
         favouritePhotoDao.insertReplace(
             photoAdapter.convertFromPhotoToFavouritePhoto(

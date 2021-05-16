@@ -5,6 +5,7 @@ import android.os.Environment
 import com.example.imagesearcher.domain.net.FileApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import java.io.*
@@ -27,6 +28,7 @@ class FileManagerImpl(
         }
         val job = GlobalScope.launch {
             val response = fileApi.downloadFileByUrl(url)
+            delay(10000L)
             saveFile(localFile, response)
             downloadQueue.remove(url)
         }
