@@ -1,6 +1,6 @@
 package com.example.imagesearcher.di
 
-import com.example.imagesearcher.domain.adapter.PhotoAdapter
+import com.example.imagesearcher.domain.adapter.PhotoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,5 +11,5 @@ import dagger.hilt.components.SingletonComponent
 class AdapterModule {
 
     @Provides
-    fun providePhotoAdapter() = PhotoAdapter()
+    fun providePhotoAdapter() = PhotoMapper()
 }

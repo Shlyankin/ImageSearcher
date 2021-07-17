@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.imagesearcher.databinding.FPhotosBinding
 import com.example.imagesearcher.ui.BindingFragment
 import com.example.imagesearcher.ui.photos.adapter.PhotosAdapter
+import com.example.imagesearcher.utils.observe
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PhotosFragment : BindingFragment<FPhotosBinding>() {
@@ -41,8 +39,8 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.photos.collect {
+        viewModel.run {
+            observe(photos) {
                 photosAdapter.submitList(it)
             }
         }

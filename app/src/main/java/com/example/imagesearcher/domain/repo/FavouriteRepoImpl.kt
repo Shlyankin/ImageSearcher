@@ -1,7 +1,7 @@
 package com.example.imagesearcher.domain.repo
 
 import android.util.Log
-import com.example.imagesearcher.domain.adapter.PhotoAdapter
+import com.example.imagesearcher.domain.adapter.PhotoMapper
 import com.example.imagesearcher.domain.dao.FavouritePhotoDao
 import com.example.imagesearcher.domain.model.FavouritePhoto
 import com.example.imagesearcher.domain.model.PhotoEntity
@@ -11,7 +11,7 @@ import java.io.File
 
 class FavouriteRepoImpl(
     private val favouritePhotoDao: FavouritePhotoDao,
-    private val photoAdapter: PhotoAdapter,
+    private val photoMapper: PhotoMapper,
     private val fileManager: FileManager,
 ) : FavouriteRepo {
 
@@ -24,7 +24,7 @@ class FavouriteRepoImpl(
         val filename = "$APP_PHOTO_PREFIX${photo.user.name}${photo.id}$JPG_EXT"
         val localPath = fileManager.downloadFile(photo.urls.full, filename).path
         favouritePhotoDao.insertReplace(
-            photoAdapter.convertFromPhotoToFavouritePhoto(
+            photoMapper.convertFromPhotoToFavouritePhoto(
                 photo,
                 localPath
             )

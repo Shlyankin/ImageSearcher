@@ -4,7 +4,7 @@ import com.example.imagesearcher.domain.model.FavouritePhoto
 import com.example.imagesearcher.domain.model.PhotoEntity
 import com.example.imagesearcher.domain.model.ui.UiPhoto
 
-class PhotoAdapter {
+class PhotoMapper {
 
     fun convertFromPhotoToUiPhoto(
         photo: PhotoEntity,

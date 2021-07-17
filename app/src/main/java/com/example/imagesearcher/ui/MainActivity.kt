@@ -2,6 +2,7 @@ package com.example.imagesearcher.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.example.imagesearcher.databinding.ActivityMainBinding
 import com.example.imagesearcher.ui.main.MainFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,11 +20,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        supportFragmentManager.beginTransaction()
-            .replace(
+        supportFragmentManager.commit {
+            replace(
                 binding.rootContainer.id,
                 mainFragment,
                 mainFragment.javaClass.name
-            ).commit()
+            )
+        }
     }
 }

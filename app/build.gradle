@@ -42,20 +42,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    kapt {
-        javacOptions {
-            // These options are normally set automatically via the Hilt Gradle plugin, but we
-            // set them manually to workaround a bug in the Kotlin 1.5.20
-            option("-Adagger.fastInit=ENABLED")
-            option("-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true")
-        }
-    }
 }
 
 dependencies {
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.20"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.0"
     implementation 'androidx.core:core-ktx:1.6.0'
     // Androidx
     implementation "androidx.activity:activity-ktx:1.2.3"

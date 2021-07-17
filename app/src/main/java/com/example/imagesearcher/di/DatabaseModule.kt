@@ -2,7 +2,7 @@ package com.example.imagesearcher.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.imagesearcher.domain.adapter.PhotoAdapter
+import com.example.imagesearcher.domain.adapter.PhotoMapper
 import com.example.imagesearcher.domain.dao.FavouritePhotoDao
 import com.example.imagesearcher.domain.dao.PhotoDao
 import com.example.imagesearcher.domain.database.ImageSearcherDatabase
@@ -45,7 +45,7 @@ class DatabaseModule {
     @Provides
     fun provideFavouriteRepo(
         favouritePhotoDao: FavouritePhotoDao,
-        photoAdapter: PhotoAdapter,
+        photoMapper: PhotoMapper,
         fileManager: FileManager
-    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, photoAdapter, fileManager)
+    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, photoMapper, fileManager)
 }

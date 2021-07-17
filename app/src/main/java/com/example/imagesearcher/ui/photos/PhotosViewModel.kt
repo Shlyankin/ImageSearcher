@@ -1,16 +1,16 @@
 package com.example.imagesearcher.ui.photos
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.imagesearcher.domain.adapter.PhotoAdapter
-import com.example.imagesearcher.domain.model.FavouritePhoto
 import com.example.imagesearcher.domain.model.ui.UiPhoto
 import com.example.imagesearcher.domain.usecase.FavouriteUseCase
 import com.example.imagesearcher.domain.usecase.PhotoUseCase
+import com.example.imagesearcher.utils.combineNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,23 +18,20 @@ import javax.inject.Inject
 class PhotosViewModel @Inject constructor(
     private val photosUseCase: PhotoUseCase,
     private val favouriteUseCase: FavouriteUseCase,
-    private val photosAdapter: PhotoAdapter
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    private val _favouritePhotos = MutableStateFlow<List<FavouritePhoto>>(emptyList())
-    val photos = photosUseCase.photos.combine(_favouritePhotos) { all, favourite ->
-        photosAdapter.convertFromPhotoToUiPhoto(all, favourite)
+    private val _favouritePhotos = MutableLiveData<List<UiPhoto>>()
+    private val _photos = MutableLiveData<List<UiPhoto>>()
+    val photos = _favouritePhotos.combineNotNull(_photos) { favourite, all ->
+        all.onEach { f ->
+            f.isFavourite = favourite.find { it.id == f.id } != null
+        }
     }
 
     fun addToFavouriteClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch {
-            photosUseCase.photos.value.find { it.id == uiPhoto.id }?.let {
-                if (!uiPhoto.isFavourite) {
-                    favouriteUseCase.addToFavourite(it)
-                } else {
-                    favouriteUseCase.deleteFromFavourites(it)
-                }
-            }
+            favouriteUseCase.changePhotoFavouriteState(uiPhoto)
         }
     }
 
@@ -42,11 +39,10 @@ class PhotosViewModel @Inject constructor(
         viewModelScope.launch {
             photosUseCase.updatePhotos(1)
         }
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             favouriteUseCase.favouritePhotos.collect {
-                _favouritePhotos.emit(it)
+                _photos.postValue(it)
             }
         }
     }
-
 }
