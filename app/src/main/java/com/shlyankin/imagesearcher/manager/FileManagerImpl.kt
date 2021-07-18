@@ -3,6 +3,7 @@ package com.shlyankin.imagesearcher.manager
 import android.content.Context
 import android.os.Environment
 import com.shlyankin.imagesearcher.domain.net.FileApi
+import com.shlyankin.imagesearcher.domain.net.safeApiCall
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -27,10 +28,13 @@ class FileManagerImpl(
             createNewFile()
         }
         val job = GlobalScope.launch {
-            val response = fileApi.downloadFileByUrl(url)
-            delay(10000L)
-            saveFile(localFile, response)
-            downloadQueue.remove(url)
+            safeApiCall {
+                fileApi.downloadFileByUrl(url)
+            }.checkResult { response ->
+                delay(10000L)
+                saveFile(localFile, response)
+                downloadQueue.remove(url)
+            }
         }
         downloadQueue[url] = job
         return localFile

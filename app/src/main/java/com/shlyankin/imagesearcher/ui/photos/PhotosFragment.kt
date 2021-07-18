@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shlyankin.imagesearcher.databinding.FPhotosBinding
 import com.shlyankin.imagesearcher.ui.BindingFragment
 import com.shlyankin.imagesearcher.ui.photos.adapter.PhotosAdapter
@@ -29,6 +30,7 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
 
     override fun FPhotosBinding.onInitViews() {
         photos.adapter = photosAdapter
+        photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
         photos.layoutManager = LinearLayoutManager(requireContext())
         photos.addItemDecoration(
             DividerItemDecoration(

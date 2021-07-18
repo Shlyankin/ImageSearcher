@@ -16,7 +16,7 @@ class FavouriteUseCaseImpl(
 
     private val rawFavouritePhotos = favouriteRepo.getAll()
     override val favouritePhotos = rawFavouritePhotos.map {
-        photosMapper.convertFromFavouritePhotoToUiPhoto(it)
+        photosMapper.convertFromFavouritePhotoToUiPhoto(it).reversed()
     }
 
     override suspend fun changePhotoFavouriteState(photo: UiPhoto) {

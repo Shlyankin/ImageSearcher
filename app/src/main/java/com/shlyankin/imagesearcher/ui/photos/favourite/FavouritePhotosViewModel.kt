@@ -9,7 +9,6 @@ import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCase
 import com.shlyankin.imagesearcher.utils.liveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
@@ -25,10 +24,9 @@ class FavouritePhotosViewModel @Inject constructor(
 
     private val _favouritePhotos = MutableLiveData<List<UiPhoto>>()
     val favouritePhotos = _favouritePhotos.liveData()
-    val jobObserveFavouritePhotos: Job
 
     init {
-        jobObserveFavouritePhotos = viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch(ioDispatcher) {
             favouriteUseCase.favouritePhotos.collect {
                 logger.info("collect: $it")
                 _favouritePhotos.postValue(it)
