@@ -1,12 +1,12 @@
 package com.shlyankin.imagesearcher.di
 
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
-import com.shlyankin.imagesearcher.domain.repo.FavouriteRepo
-import com.shlyankin.imagesearcher.domain.repo.PhotoRepo
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCase
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCaseImpl
-import com.shlyankin.imagesearcher.domain.usecase.PhotoUseCase
-import com.shlyankin.imagesearcher.domain.usecase.PhotoUseCaseImpl
+import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepo
+import com.shlyankin.imagesearcher.domain.repo.photo.PhotoRepo
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCase
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCaseImpl
+import com.shlyankin.imagesearcher.domain.usecase.photo.PhotosUseCase
+import com.shlyankin.imagesearcher.domain.usecase.photo.PhotosUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ class UseCaseModule {
     fun providePhotoUseCase(
         photoRepo: PhotoRepo,
         photosMapper: PhotoMapper
-    ): PhotoUseCase = PhotoUseCaseImpl(photoRepo, photosMapper)
+    ): PhotosUseCase = PhotosUseCaseImpl(photoRepo, photosMapper)
 
     @Singleton
     @Provides

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shlyankin.imagesearcher.di.IoDispatcher
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCase
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCase
 import com.shlyankin.imagesearcher.utils.liveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher

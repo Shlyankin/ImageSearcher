@@ -1,4 +1,4 @@
-package com.shlyankin.imagesearcher.domain.repo
+package com.shlyankin.imagesearcher.domain.repo.favourite
 
 import android.util.Log
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper

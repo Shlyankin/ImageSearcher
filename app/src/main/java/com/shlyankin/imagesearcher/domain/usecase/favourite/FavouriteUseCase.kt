@@ -1,4 +1,4 @@
-package com.shlyankin.imagesearcher.domain.usecase
+package com.shlyankin.imagesearcher.domain.usecase.favourite
 
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
 import kotlinx.coroutines.flow.Flow

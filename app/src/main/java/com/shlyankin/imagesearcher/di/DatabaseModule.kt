@@ -7,10 +7,10 @@ import com.shlyankin.imagesearcher.domain.dao.FavouritePhotoDao
 import com.shlyankin.imagesearcher.domain.dao.PhotoDao
 import com.shlyankin.imagesearcher.domain.database.ImageSearcherDatabase
 import com.shlyankin.imagesearcher.domain.net.UnsplashApi
-import com.shlyankin.imagesearcher.domain.repo.FavouriteRepo
-import com.shlyankin.imagesearcher.domain.repo.FavouriteRepoImpl
-import com.shlyankin.imagesearcher.domain.repo.PhotoRepo
-import com.shlyankin.imagesearcher.domain.repo.PhotoRepoImpl
+import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepo
+import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepoImpl
+import com.shlyankin.imagesearcher.domain.repo.photo.PhotoRepo
+import com.shlyankin.imagesearcher.domain.repo.photo.PhotoRepoImpl
 import com.shlyankin.imagesearcher.manager.FileManager
 import dagger.Module
 import dagger.Provides

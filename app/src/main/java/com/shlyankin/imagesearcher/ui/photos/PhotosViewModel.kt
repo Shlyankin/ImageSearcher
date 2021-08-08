@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shlyankin.imagesearcher.di.IoDispatcher
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCase
-import com.shlyankin.imagesearcher.domain.usecase.PhotoUseCase
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCase
+import com.shlyankin.imagesearcher.domain.usecase.photo.PhotosUseCase
 import com.shlyankin.imagesearcher.utils.combineNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
-    private val photosUseCase: PhotoUseCase,
+    private val photosUseCase: PhotosUseCase,
     private val favouriteUseCase: FavouriteUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {

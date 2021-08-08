@@ -1,10 +1,10 @@
-package com.shlyankin.imagesearcher.domain.usecase
+package com.shlyankin.imagesearcher.domain.usecase.favourite
 
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
 import com.shlyankin.imagesearcher.domain.model.PhotoEntity
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
-import com.shlyankin.imagesearcher.domain.repo.FavouriteRepo
-import com.shlyankin.imagesearcher.domain.repo.PhotoRepo
+import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepo
+import com.shlyankin.imagesearcher.domain.repo.photo.PhotoRepo
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 

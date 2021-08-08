@@ -1,4 +1,4 @@
-package com.shlyankin.imagesearcher.domain.repo
+package com.shlyankin.imagesearcher.domain.repo.favourite
 
 import com.shlyankin.imagesearcher.domain.model.FavouritePhoto
 import com.shlyankin.imagesearcher.domain.model.PhotoEntity
