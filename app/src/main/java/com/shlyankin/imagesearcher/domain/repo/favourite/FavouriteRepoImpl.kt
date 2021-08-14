@@ -47,9 +47,6 @@ class FavouriteRepoImpl(
     }
 
     override fun getAll(): Flow<List<FavouritePhoto>> {
-//        GlobalScope.launch {
-//            val t = favouritePhotoDao.getAllSusp()
-//        }
         return favouritePhotoDao.getAll()
     }
 }

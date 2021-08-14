@@ -5,10 +5,12 @@ import com.shlyankin.imagesearcher.domain.model.PhotoEntity
 import com.shlyankin.imagesearcher.domain.net.ResultWrapper
 import com.shlyankin.imagesearcher.domain.net.UnsplashApi
 import com.shlyankin.imagesearcher.domain.net.safeApiCall
+import kotlinx.coroutines.CoroutineDispatcher
 
 class PhotoRepoImpl(
     private val unsplashApi: UnsplashApi,
-    private val photoDao: PhotoDao
+    private val photoDao: PhotoDao,
+    private val ioDispatcher: CoroutineDispatcher
 ) : PhotoRepo {
 
     override suspend fun getPhoto(photoId: String): PhotoEntity? {
@@ -17,7 +19,7 @@ class PhotoRepoImpl(
 
     override suspend fun getPhotos(page: Int): ResultWrapper<List<PhotoEntity>> {
         return safeApiCall {
-            unsplashApi.searchPhotos("random", page).results
+            unsplashApi.randomPhotos(page)
         }.also {
             it.checkResult {
                 photoDao.insertReplace(it)

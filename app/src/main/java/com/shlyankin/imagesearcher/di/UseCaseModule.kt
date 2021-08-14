@@ -1,6 +1,7 @@
 package com.shlyankin.imagesearcher.di
 
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
+import com.shlyankin.imagesearcher.domain.datasource.photo.PhotosDataSource
 import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepo
 import com.shlyankin.imagesearcher.domain.repo.photo.PhotoRepo
 import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCase
@@ -20,9 +21,10 @@ class UseCaseModule {
     @Singleton
     @Provides
     fun providePhotoUseCase(
+        photosDataSource: PhotosDataSource,
         photoRepo: PhotoRepo,
         photosMapper: PhotoMapper
-    ): PhotosUseCase = PhotosUseCaseImpl(photoRepo, photosMapper)
+    ): PhotosUseCase = PhotosUseCaseImpl(photosDataSource, photosMapper)
 
     @Singleton
     @Provides

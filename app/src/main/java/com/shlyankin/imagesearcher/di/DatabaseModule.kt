@@ -17,6 +17,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -44,8 +45,12 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun providePhotoRepo(unsplashApi: UnsplashApi, photoDao: PhotoDao): PhotoRepo =
-        PhotoRepoImpl(unsplashApi, photoDao)
+    fun providePhotoRepo(
+        unsplashApi: UnsplashApi,
+        photoDao: PhotoDao,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): PhotoRepo =
+        PhotoRepoImpl(unsplashApi, photoDao, ioDispatcher)
 
     @Singleton
     @Provides

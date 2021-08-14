@@ -30,6 +30,14 @@ class PhotoMapper {
             convertFromPhotoToUiPhoto(photo, favouritePhoto?.localPath, photo in favouriteList)
         }
 
+    fun convertFromPhotoToUiPhoto(
+        photo: PhotoEntity,
+        favouriteList: List<FavouritePhoto> = emptyList()
+    ): UiPhoto {
+        val favouritePhoto = favouriteList.find { it == photo }
+        return convertFromPhotoToUiPhoto(photo, favouritePhoto?.localPath, photo in favouriteList)
+    }
+
     fun convertFromFavouritePhotoToUiPhoto(photo: FavouritePhoto): UiPhoto =
         UiPhoto(
             photo.id,

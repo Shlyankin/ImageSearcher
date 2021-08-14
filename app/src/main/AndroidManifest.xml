@@ -7,14 +7,16 @@
 
     <application
         android:name="com.shlyankin.imagesearcher.ImageSearcherApplication"
-        android:usesCleartextTraffic="true"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ImageSearcher">
-        <activity android:name="com.shlyankin.imagesearcher.ui.MainActivity">
+        android:theme="@style/Theme.ImageSearcher"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="com.shlyankin.imagesearcher.ui.MainActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

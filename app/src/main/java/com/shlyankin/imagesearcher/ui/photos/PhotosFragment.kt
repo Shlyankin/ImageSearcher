@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shlyankin.imagesearcher.databinding.FPhotosBinding
 import com.shlyankin.imagesearcher.ui.BindingFragment
 import com.shlyankin.imagesearcher.ui.photos.adapter.PhotosAdapter
-import com.shlyankin.imagesearcher.utils.observe
+import com.shlyankin.imagesearcher.ui.photos.adapter.load.PhotosLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PhotosFragment : BindingFragment<FPhotosBinding>() {
@@ -31,6 +34,10 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
     override fun FPhotosBinding.onInitViews() {
         photos.adapter = photosAdapter
         photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+        photosAdapter.withLoadStateFooter(PhotosLoadStateAdapter(photosAdapter::retry))
+        photosAdapter.addLoadStateListener { loadStates ->
+            viewModel.onLoadStateChanged(loadStates)
+        }
         photos.layoutManager = LinearLayoutManager(requireContext())
         photos.addItemDecoration(
             DividerItemDecoration(
@@ -41,9 +48,9 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
     }
 
     private fun observeViewModel() {
-        viewModel.run {
-            observe(photos) {
-                photosAdapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.photos.collect {
+                photosAdapter.submitData(it)
             }
         }
     }

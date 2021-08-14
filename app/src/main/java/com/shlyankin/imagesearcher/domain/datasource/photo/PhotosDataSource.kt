@@ -8,12 +8,14 @@ import com.shlyankin.imagesearcher.domain.repo.photo.PhotoRepo
 import kotlinx.coroutines.flow.Flow
 
 class PhotosDataSource(private val repo: PhotoRepo) {
+
+    private companion object {
+        const val PAGE_SIZE = 20
+    }
+
     fun getPhotos(): Flow<PagingData<PhotoEntity>> {
         return Pager(
-            config = PagingConfig(
-                pageSize = 1,
-                enablePlaceholders = false
-            ),
+            config = PagingConfig(pageSize = PAGE_SIZE),
             pagingSourceFactory = ::createPhotosPagingSource
         ).flow
     }
