@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.cachedIn
 import androidx.paging.map
 import com.shlyankin.imagesearcher.di.IoDispatcher
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
@@ -15,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.util.logging.Logger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,11 +26,13 @@ class PhotosViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
+    private val logger: Logger = Logger.getLogger(PhotosViewModel::class.java.name)
 
     private val _favouritePhotos = favouriteUseCase.favouritePhotos
-    private val _photos = photosUseCase.photos
+    private val _photos = photosUseCase.photos.cachedIn(viewModelScope)
 
     val photos = _favouritePhotos.combine(_photos) { favourite, allPagingData ->
+        logger.info("favourite: $favourite, all: $allPagingData")
         allPagingData.map { photo ->
             photo.copy(isFavourite = favourite.find { it.id == photo.id } != null)
         }

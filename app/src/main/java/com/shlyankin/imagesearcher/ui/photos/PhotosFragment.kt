@@ -14,7 +14,7 @@ import com.shlyankin.imagesearcher.ui.BindingFragment
 import com.shlyankin.imagesearcher.ui.photos.adapter.PhotosAdapter
 import com.shlyankin.imagesearcher.ui.photos.adapter.load.PhotosLoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -49,7 +49,7 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
 
     private fun observeViewModel() {
         lifecycleScope.launch {
-            viewModel.photos.collect {
+            viewModel.photos.collectLatest {
                 photosAdapter.submitData(it)
             }
         }
