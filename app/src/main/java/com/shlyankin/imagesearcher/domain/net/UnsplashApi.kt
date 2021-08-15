@@ -1,5 +1,6 @@
 package com.shlyankin.imagesearcher.domain.net
 
+import com.shlyankin.imagesearcher.domain.model.NetPhoto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,10 +11,20 @@ interface UnsplashApi {
         const val BASE_URL = "https://api.unsplash.com/"
     }
 
+    /**
+     * todo: апи поиска фото. Сейчас функционал не реализован
+     */
     @GET("/search/photos")
-    suspend fun searchPhotos(
+    suspend fun randomPhotos(
         @Query("query") query: String,
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 10
     ): SearchPhotosResponse
+
+
+    @GET("/photos")
+    suspend fun randomPhotos(
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 10
+    ): List<NetPhoto>
 }

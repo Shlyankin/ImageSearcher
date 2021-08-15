@@ -1,17 +1,17 @@
 package com.shlyankin.imagesearcher.ui.photos.favourite
 
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.shlyankin.imagesearcher.di.IoDispatcher
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCase
-import com.shlyankin.imagesearcher.utils.liveData
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.logging.Logger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,29 +20,13 @@ class FavouritePhotosViewModel @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val logger: Logger = Logger.getLogger(FavouritePhotosFragment::class.java.name)
-
-    private val _favouritePhotos = MutableLiveData<List<UiPhoto>>()
-    val favouritePhotos = _favouritePhotos.liveData()
-
-    init {
-        viewModelScope.launch(ioDispatcher) {
-            favouriteUseCase.favouritePhotos.collect {
-                logger.info("collect: $it")
-                _favouritePhotos.postValue(it)
-            }
-        }
-    }
+    val favouritePhotos = favouriteUseCase.favouritePhotos
+        .map { PagingData.from(it) }.flowOn(ioDispatcher)
 
     fun addToFavouriteClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch(ioDispatcher) {
-            logger.info("changePhotoFavouriteState: $uiPhoto")
-            favouriteUseCase.changePhotoFavouriteState(uiPhoto)
+            Log.i(FavouritePhotosViewModel::class.java.name, "changePhotoFavouriteState: $uiPhoto")
+            favouriteUseCase.removeFromFavourite(uiPhoto.id)
         }
-    }
-
-    override fun onCleared() {
-        logger.info("onCleared")
-        super.onCleared()
     }
 }

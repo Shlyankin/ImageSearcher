@@ -4,16 +4,14 @@ import android.content.Context
 import android.os.Environment
 import com.shlyankin.imagesearcher.domain.net.FileApi
 import com.shlyankin.imagesearcher.domain.net.safeApiCall
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.io.*
 
 class FileManagerImpl(
     private val fileApi: FileApi,
-    private val context: Context
+    private val context: Context,
+    private val ioDispatcher: CoroutineDispatcher
 ) : FileManager {
 
     private val downloadQueue = mutableMapOf<String, Job>()
@@ -22,16 +20,16 @@ class FileManagerImpl(
         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     }
 
+    @DelicateCoroutinesApi
     override fun downloadFile(url: String, filename: String): File {
         val localFile = File(favouriteImageFile, filename).apply {
             parentFile?.mkdirs()
             createNewFile()
         }
-        val job = GlobalScope.launch {
+        val job = GlobalScope.launch(ioDispatcher) {
             safeApiCall {
                 fileApi.downloadFileByUrl(url)
             }.checkResult { response ->
-                delay(10000L)
                 saveFile(localFile, response)
                 downloadQueue.remove(url)
             }
@@ -40,18 +38,41 @@ class FileManagerImpl(
         return localFile
     }
 
+    @DelicateCoroutinesApi
+    override suspend fun suspendDownloadFile(url: String, filename: String): File {
+        try {
+            val job = GlobalScope.async(ioDispatcher) {
+                val localFile = File(favouriteImageFile, filename)
+                localFile.runCatching {
+                    parentFile?.mkdirs()
+                    createNewFile()
+                }
+                safeApiCall {
+                    fileApi.downloadFileByUrl(url)
+                }.checkResult { response ->
+                    saveFile(localFile, response)
+                }
+                return@async localFile
+            }
+            downloadQueue[url] = job
+            return job.await()
+        } finally {
+            downloadQueue.remove(url)
+        }
+    }
+
     private fun saveFile(
         file: File,
         body: ResponseBody
     ) {
+        var bis: InputStream? = null
+        var output: OutputStream? = null
         try {
-
             var count: Int
             val data = ByteArray(1024 * 4)
             val fileSize = body.contentLength()
-            val bis: InputStream = BufferedInputStream(body.byteStream(), 1024 * 8)
-
-            val output: OutputStream = FileOutputStream(file)
+            bis = BufferedInputStream(body.byteStream(), 1024 * 8)
+            output = FileOutputStream(file)
             var total: Long = 0
             var progress = 0
             if (fileSize < 0) {
@@ -65,11 +86,12 @@ class FileManagerImpl(
                     progress = progressCount.toInt()
                 }
             }
-            output.flush()
-            output.close()
-            bis.close()
         } catch (e: Exception) {
             file.delete()
+        } finally {
+            output?.flush()
+            output?.close()
+            bis?.close()
         }
     }
 

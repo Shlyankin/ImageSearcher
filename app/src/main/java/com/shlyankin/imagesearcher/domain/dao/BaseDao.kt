@@ -15,5 +15,5 @@ interface BaseDao<T> {
     suspend fun update(t: T)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReplace(t: List<T>)
+    suspend fun insertReplace(t: List<T>)
 }

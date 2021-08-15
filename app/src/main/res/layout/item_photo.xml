@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             app:layout_constraintTop_toBottomOf="@id/descriptionRoot"
+            android:contentDescription="@string/image"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
@@ -55,6 +56,7 @@
             android:src="@drawable/ic_empty_favourite"
             app:layout_constraintStart_toStartOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/image"
+            android:contentDescription="@string/add_to_favourite"
             app:tint="@color/colorPrimary" />
 
     </LinearLayout>

@@ -1,12 +1,12 @@
 package com.shlyankin.imagesearcher.di
 
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
-import com.shlyankin.imagesearcher.domain.repo.FavouriteRepo
-import com.shlyankin.imagesearcher.domain.repo.PhotoRepo
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCase
-import com.shlyankin.imagesearcher.domain.usecase.FavouriteUseCaseImpl
-import com.shlyankin.imagesearcher.domain.usecase.PhotoUseCase
-import com.shlyankin.imagesearcher.domain.usecase.PhotoUseCaseImpl
+import com.shlyankin.imagesearcher.domain.datasource.photo.PhotosDataSource
+import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepo
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCase
+import com.shlyankin.imagesearcher.domain.usecase.favourite.FavouriteUseCaseImpl
+import com.shlyankin.imagesearcher.domain.usecase.photo.PhotosUseCase
+import com.shlyankin.imagesearcher.domain.usecase.photo.PhotosUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,16 +20,15 @@ class UseCaseModule {
     @Singleton
     @Provides
     fun providePhotoUseCase(
-        photoRepo: PhotoRepo,
+        photosDataSource: PhotosDataSource,
         photosMapper: PhotoMapper
-    ): PhotoUseCase = PhotoUseCaseImpl(photoRepo, photosMapper)
+    ): PhotosUseCase = PhotosUseCaseImpl(photosDataSource, photosMapper)
 
     @Singleton
     @Provides
     fun provideFavouriteUseCase(
-        photoRepo: PhotoRepo,
         favouriteRepo: FavouriteRepo,
         photosMapper: PhotoMapper
-    ): FavouriteUseCase = FavouriteUseCaseImpl(photoRepo, favouriteRepo, photosMapper)
+    ): FavouriteUseCase = FavouriteUseCaseImpl(favouriteRepo, photosMapper)
 
 }

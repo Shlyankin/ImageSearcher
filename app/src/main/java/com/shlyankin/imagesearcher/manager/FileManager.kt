@@ -4,6 +4,7 @@ import java.io.File
 
 interface FileManager {
     val favouriteImageFile: File?
-    fun downloadFile(url: String, filename: String): File
+    suspend fun suspendDownloadFile(url: String, filename: String): File
     fun stopDownloadFile(url: String)
+    fun downloadFile(url: String, filename: String): File
 }

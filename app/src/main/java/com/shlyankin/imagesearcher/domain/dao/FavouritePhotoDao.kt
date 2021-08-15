@@ -18,6 +18,6 @@ interface FavouritePhotoDao : BaseDao<FavouritePhoto> {
     suspend fun getAllSuspend(): List<FavouritePhoto>
 
     @Query("SELECT * FROM FavouritePhoto WHERE id=:id")
-    suspend fun getSuspend(id: String): FavouritePhoto?
+    suspend fun get(id: String): FavouritePhoto?
 
 }

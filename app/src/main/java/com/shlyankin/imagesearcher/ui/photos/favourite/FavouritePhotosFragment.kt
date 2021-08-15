@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shlyankin.imagesearcher.databinding.FPhotosBinding
 import com.shlyankin.imagesearcher.ui.BindingFragment
 import com.shlyankin.imagesearcher.ui.photos.adapter.PhotosAdapter
-import com.shlyankin.imagesearcher.utils.observe
+import com.shlyankin.imagesearcher.utils.observeLatest
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,8 +43,8 @@ class FavouritePhotosFragment : BindingFragment<FPhotosBinding>() {
 
     private fun observeViewModel() {
         viewModel.run {
-            observe(favouritePhotos) {
-                photosAdapter.submitList(it)
+            observeLatest(favouritePhotos) {
+                photosAdapter.submitData(it)
             }
         }
     }
