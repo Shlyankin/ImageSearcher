@@ -47,7 +47,7 @@
         app:layout_constraintStart_toEndOf="@id/error_image"
         app:layout_constraintTop_toTopOf="@id/error_image" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/retryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/error_image" />
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
+    <ProgressBar
         android:id="@+id/circularProgressIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

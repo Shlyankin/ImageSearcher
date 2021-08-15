@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shlyankin.imagesearcher.R
 import com.shlyankin.imagesearcher.databinding.FPhotosBinding
 import com.shlyankin.imagesearcher.ui.BindingFragment
 import com.shlyankin.imagesearcher.ui.photos.adapter.PhotosAdapter
@@ -32,9 +35,9 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
     }
 
     override fun FPhotosBinding.onInitViews() {
-        photos.adapter = photosAdapter
+        photos.adapter =
+            photosAdapter.withLoadStateFooter(footer = PhotosLoadStateAdapter(photosAdapter::retry))
         photosAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-        photosAdapter.withLoadStateFooter(PhotosLoadStateAdapter(photosAdapter::retry))
         photosAdapter.addLoadStateListener { loadStates ->
             viewModel.onLoadStateChanged(loadStates)
         }
@@ -45,6 +48,9 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
                 DividerItemDecoration.HORIZONTAL
             )
         )
+        retryButton.setOnClickListener {
+            photosAdapter.retry()
+        }
     }
 
     private fun observeViewModel() {
@@ -53,5 +59,22 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
                 photosAdapter.submitData(it)
             }
         }
+        lifecycleScope.launch {
+            viewModel.currentState.collectLatest {
+                binding.run {
+                    retryButton.isVisible = it.retryVisible
+                    loadingIndicator.isVisible = it.progressVisible
+                    if (it.errorVisible) {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.page_loading_error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
     }
+
+
 }

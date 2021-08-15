@@ -13,9 +13,8 @@ import com.shlyankin.imagesearcher.domain.usecase.photo.PhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
 import javax.inject.Inject
@@ -28,6 +27,10 @@ class PhotosViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val logger: Logger = Logger.getLogger(PhotosViewModel::class.java.name)
+
+    private val _currentState = MutableSharedFlow<PhotoUiState>()
+    val currentState =
+        _currentState.buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     private val _favouritePhotos = favouriteUseCase.favouritePhotos
     private val _photos = photosUseCase.photos.cachedIn(viewModelScope)
@@ -49,11 +52,33 @@ class PhotosViewModel @Inject constructor(
         }
     }
 
-    fun onLoadStateChanged(loadStates: CombinedLoadStates) {
-        if (loadStates.refresh is LoadState.Loading) {
-
-        } else {
-
+    fun onLoadStateChanged(loadState: CombinedLoadStates) {
+        viewModelScope.launch {
+            if (loadState.refresh is LoadState.Loading) {
+                _currentState.emit(PhotoUiState(true, false, false))
+            } else {
+                val errorState = when {
+                    loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+                    loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+                    loadState.refresh is LoadState.Error -> {
+                        loadState.refresh as LoadState.Error
+                    }
+                    else -> null
+                }
+                _currentState.emit(
+                    PhotoUiState(
+                        false,
+                        loadState.refresh is LoadState.Error,
+                        errorState != null
+                    )
+                )
+            }
         }
     }
 }
+
+data class PhotoUiState(
+    val progressVisible: Boolean,
+    val retryVisible: Boolean,
+    val errorVisible: Boolean
+)

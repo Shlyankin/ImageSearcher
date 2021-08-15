@@ -7,4 +7,5 @@
     <string name="image">Изображение</string>
     <string name="add_to_favourite">Добавить в избранное</string>
     <string name="end_of_images"><![CDATA[<Больше нет картинок>]]></string>
+    <string name="page_loading_error">Ошибка при загрузке страницы</string>
 </resources>
