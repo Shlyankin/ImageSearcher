@@ -6,7 +6,6 @@ import com.shlyankin.imagesearcher.domain.net.FileApi
 import com.shlyankin.imagesearcher.domain.net.safeApiCall
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import java.io.*
@@ -31,7 +30,6 @@ class FileManagerImpl(
             safeApiCall {
                 fileApi.downloadFileByUrl(url)
             }.checkResult { response ->
-                delay(10000L)
                 saveFile(localFile, response)
                 downloadQueue.remove(url)
             }
