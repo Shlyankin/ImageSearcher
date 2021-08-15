@@ -1,6 +1,6 @@
 package com.shlyankin.imagesearcher.domain.net
 
-import com.shlyankin.imagesearcher.domain.model.PhotoEntity
+import com.shlyankin.imagesearcher.domain.model.NetPhoto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -23,5 +23,5 @@ interface UnsplashApi {
     suspend fun randomPhotos(
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 10
-    ): List<PhotoEntity>
+    ): List<NetPhoto>
 }

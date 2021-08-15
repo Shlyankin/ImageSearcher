@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
 import com.shlyankin.imagesearcher.domain.dao.FavouritePhotoDao
-import com.shlyankin.imagesearcher.domain.dao.PhotoDao
 import com.shlyankin.imagesearcher.domain.database.ImageSearcherDatabase
 import com.shlyankin.imagesearcher.domain.net.UnsplashApi
 import com.shlyankin.imagesearcher.domain.repo.favourite.FavouriteRepo
@@ -36,10 +35,6 @@ class DatabaseModule {
 
     @Singleton
     @Provides
-    fun providePhotoDao(appDatabase: ImageSearcherDatabase): PhotoDao = appDatabase.getPhotoDao()
-
-    @Singleton
-    @Provides
     fun provideFavouritePhotoDao(appDatabase: ImageSearcherDatabase): FavouritePhotoDao =
         appDatabase.getFavouritePhotoDao()
 
@@ -47,10 +42,8 @@ class DatabaseModule {
     @Provides
     fun providePhotoRepo(
         unsplashApi: UnsplashApi,
-        photoDao: PhotoDao,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): PhotoRepo =
-        PhotoRepoImpl(unsplashApi, photoDao, ioDispatcher)
+    ): PhotoRepo = PhotoRepoImpl(unsplashApi, ioDispatcher)
 
     @Singleton
     @Provides

@@ -14,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.util.logging.Logger
@@ -40,7 +41,11 @@ class PhotosViewModel @Inject constructor(
 
     fun addToFavouriteClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch(ioDispatcher) {
-            favouriteUseCase.changePhotoFavouriteState(uiPhoto)
+            _favouritePhotos.firstOrNull()?.let { favourites ->
+                favourites.find { it.id == uiPhoto.id }?.let {
+                    favouriteUseCase.removeFromFavourite(it.id)
+                }
+            } ?: favouriteUseCase.addToFavourite(uiPhoto)
         }
     }
 

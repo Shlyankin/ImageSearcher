@@ -4,7 +4,6 @@ import android.util.Log
 import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
 import com.shlyankin.imagesearcher.domain.dao.FavouritePhotoDao
 import com.shlyankin.imagesearcher.domain.model.FavouritePhoto
-import com.shlyankin.imagesearcher.domain.model.PhotoEntity
 import com.shlyankin.imagesearcher.manager.FileManager
 import kotlinx.coroutines.flow.Flow
 import java.io.File
@@ -20,20 +19,15 @@ class FavouriteRepoImpl(
         const val JPG_EXT = ".jpg"
     }
 
-    override suspend fun addToFavourite(photo: PhotoEntity) {
+    override suspend fun addToFavourite(photo: FavouritePhoto) {
         val filename = "$APP_PHOTO_PREFIX${photo.user.name}${photo.id}$JPG_EXT"
         val localPath = fileManager.downloadFile(photo.urls.full, filename).path
-        favouritePhotoDao.insertReplace(
-            photoMapper.convertFromPhotoToFavouritePhoto(
-                photo,
-                localPath
-            )
-        )
+        favouritePhotoDao.insertReplace(photo.copy(localPath = localPath))
     }
 
-    override suspend fun deleteFromFavourite(photo: PhotoEntity) {
+    override suspend fun deleteFromFavourite(photo: FavouritePhoto) {
         fileManager.stopDownloadFile(photo.urls.full)
-        favouritePhotoDao.getSuspend(photo.id)?.let {
+        favouritePhotoDao.get(photo.id)?.let {
             try {
                 File(it.localPath).delete()
             } catch (e: Exception) {
@@ -48,5 +42,9 @@ class FavouriteRepoImpl(
 
     override fun getAll(): Flow<List<FavouritePhoto>> {
         return favouritePhotoDao.getAll()
+    }
+
+    override suspend fun get(id: String): FavouritePhoto? {
+        return favouritePhotoDao.get(id)
     }
 }

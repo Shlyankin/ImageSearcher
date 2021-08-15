@@ -5,18 +5,21 @@ import com.bumptech.glide.Glide
 import com.shlyankin.imagesearcher.R
 import com.shlyankin.imagesearcher.databinding.ItemPhotoBinding
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
-import com.shlyankin.imagesearcher.utils.GlideErrorRequestListener
 
 class PhotoViewHolder(
     private val viewBinding: ItemPhotoBinding
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
-    private fun loadImage(uri: String, onLoadFailed: () -> Boolean = { false }): Boolean {
+    private fun loadImage(uri: String, errorUri: String? = null): Boolean {
         viewBinding.run {
             Glide.with(root)
                 .load(uri)
-                .listener(GlideErrorRequestListener(onLoadFailed))
                 .placeholder(R.drawable.ic_launcher)
+                .apply {
+                    if (errorUri != null) {
+                        error(Glide.with(root).load(errorUri))
+                    }
+                }
                 .error(R.drawable.ic_error)
                 .centerCrop()
                 .into(image)
@@ -32,7 +35,7 @@ class PhotoViewHolder(
             title.text = photo.description
             userName.text = photo.user.name
             photo.localPath?.let { localPath ->
-                loadImage(localPath, onLoadFailed = { loadImage(photo.urls.regular) })
+                loadImage(localPath, errorUri = photo.urls.regular)
             } ?: loadImage(photo.urls.regular)
             addToFavourite.setImageResource(
                 if (photo.isFavourite) {

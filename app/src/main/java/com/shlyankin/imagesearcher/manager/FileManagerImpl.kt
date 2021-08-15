@@ -4,9 +4,7 @@ import android.content.Context
 import android.os.Environment
 import com.shlyankin.imagesearcher.domain.net.FileApi
 import com.shlyankin.imagesearcher.domain.net.safeApiCall
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.io.*
 
@@ -30,12 +28,34 @@ class FileManagerImpl(
             safeApiCall {
                 fileApi.downloadFileByUrl(url)
             }.checkResult { response ->
+                delay(10000L)
                 saveFile(localFile, response)
                 downloadQueue.remove(url)
             }
         }
         downloadQueue[url] = job
         return localFile
+    }
+
+    override suspend fun suspendDownloadFile(url: String, filename: String): File {
+        try {
+            val job = GlobalScope.async {
+                val localFile = File(favouriteImageFile, filename).apply {
+                    parentFile?.mkdirs()
+                    createNewFile()
+                }
+                safeApiCall {
+                    fileApi.downloadFileByUrl(url)
+                }.checkResult { response ->
+                    saveFile(localFile, response)
+                }
+                return@async localFile
+            }
+            downloadQueue[url] = job
+            return job.await()
+        } finally {
+            downloadQueue.remove(url)
+        }
     }
 
     private fun saveFile(

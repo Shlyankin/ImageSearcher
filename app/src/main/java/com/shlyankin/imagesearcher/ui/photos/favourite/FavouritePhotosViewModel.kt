@@ -28,7 +28,7 @@ class FavouritePhotosViewModel @Inject constructor(
     fun addToFavouriteClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch(ioDispatcher) {
             logger.info("changePhotoFavouriteState: $uiPhoto")
-            favouriteUseCase.changePhotoFavouriteState(uiPhoto)
+            favouriteUseCase.removeFromFavourite(uiPhoto.id)
         }
     }
 }
