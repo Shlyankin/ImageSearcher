@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -14,6 +15,7 @@ class DataSourceModule {
 
     @Singleton
     @Provides
-    fun providePhotosDataSource(repo: PhotoRepo) = PhotosDataSource(repo)
+    fun providePhotosDataSource(repo: PhotoRepo, @IoDispatcher ioDispatcher: CoroutineDispatcher) =
+        PhotosDataSource(repo, ioDispatcher)
 
 }

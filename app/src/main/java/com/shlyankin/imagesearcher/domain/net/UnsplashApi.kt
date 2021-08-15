@@ -11,6 +11,9 @@ interface UnsplashApi {
         const val BASE_URL = "https://api.unsplash.com/"
     }
 
+    /**
+     * todo: апи поиска фото. Сейчас функционал не реализован
+     */
     @GET("/search/photos")
     suspend fun randomPhotos(
         @Query("query") query: String,

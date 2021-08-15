@@ -29,8 +29,9 @@ class PhotosViewModel @Inject constructor(
     private val logger: Logger = Logger.getLogger(PhotosViewModel::class.java.name)
 
     private val _currentState = MutableSharedFlow<PhotoUiState>()
-    val currentState =
-        _currentState.buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val currentState = _currentState.buffer(
+        capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     private val _favouritePhotos = favouriteUseCase.favouritePhotos
     private val _photos = photosUseCase.photos.cachedIn(viewModelScope)
@@ -55,7 +56,13 @@ class PhotosViewModel @Inject constructor(
     fun onLoadStateChanged(loadState: CombinedLoadStates) {
         viewModelScope.launch {
             if (loadState.refresh is LoadState.Loading) {
-                _currentState.emit(PhotoUiState(true, false, false))
+                _currentState.emit(
+                    PhotoUiState(
+                        progressVisible = true,
+                        retryVisible = false,
+                        errorVisible = false
+                    )
+                )
             } else {
                 val errorState = when {
                     loadState.append is LoadState.Error -> loadState.append as LoadState.Error

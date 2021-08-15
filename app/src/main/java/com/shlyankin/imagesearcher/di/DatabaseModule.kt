@@ -2,7 +2,6 @@ package com.shlyankin.imagesearcher.di
 
 import android.content.Context
 import androidx.room.Room
-import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
 import com.shlyankin.imagesearcher.domain.dao.FavouritePhotoDao
 import com.shlyankin.imagesearcher.domain.database.ImageSearcherDatabase
 import com.shlyankin.imagesearcher.domain.net.UnsplashApi
@@ -16,7 +15,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -41,15 +39,13 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun providePhotoRepo(
-        unsplashApi: UnsplashApi,
-        @IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): PhotoRepo = PhotoRepoImpl(unsplashApi, ioDispatcher)
+        unsplashApi: UnsplashApi
+    ): PhotoRepo = PhotoRepoImpl(unsplashApi)
 
     @Singleton
     @Provides
     fun provideFavouriteRepo(
         favouritePhotoDao: FavouritePhotoDao,
-        photoMapper: PhotoMapper,
         fileManager: FileManager
-    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, photoMapper, fileManager)
+    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, fileManager)
 }

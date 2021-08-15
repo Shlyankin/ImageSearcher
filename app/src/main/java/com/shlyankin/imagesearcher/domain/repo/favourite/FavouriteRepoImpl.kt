@@ -1,7 +1,6 @@
 package com.shlyankin.imagesearcher.domain.repo.favourite
 
 import android.util.Log
-import com.shlyankin.imagesearcher.domain.adapter.PhotoMapper
 import com.shlyankin.imagesearcher.domain.dao.FavouritePhotoDao
 import com.shlyankin.imagesearcher.domain.model.FavouritePhoto
 import com.shlyankin.imagesearcher.manager.FileManager
@@ -10,8 +9,7 @@ import java.io.File
 
 class FavouriteRepoImpl(
     private val favouritePhotoDao: FavouritePhotoDao,
-    private val photoMapper: PhotoMapper,
-    private val fileManager: FileManager,
+    private val fileManager: FileManager
 ) : FavouriteRepo {
 
     companion object {

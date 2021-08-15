@@ -6,6 +6,10 @@ import com.shlyankin.imagesearcher.utils.emptySuspendFun
 import com.shlyankin.imagesearcher.utils.emptySuspendTwiceArgsFun
 import retrofit2.HttpException
 
+/**
+ *  Suspend functional parameters with default values are not yet supported in inline functions
+ *  поэтому для оптимизации необходимо обернуть вызовы с меньшим количеством аргументов
+ */
 sealed class ResultWrapper<out T> {
     data class Success<out T>(val value: T) : ResultWrapper<T>()
     data class HttpError(val code: Int? = null, val exception: HttpException? = null) :
@@ -16,6 +20,7 @@ sealed class ResultWrapper<out T> {
 
     object NetworkError : ResultWrapper<Nothing>()
 
+    // оптимизация
     suspend inline fun checkResult(
         crossinline onSuccess: (suspend (T) -> Unit)
     ) {
@@ -27,6 +32,7 @@ sealed class ResultWrapper<out T> {
         )
     }
 
+    // оптимизация
     suspend inline fun checkResult(
         crossinline onSuccess: (suspend (T) -> Unit),
         crossinline onError: (suspend (e: Throwable?) -> Unit)
@@ -45,10 +51,7 @@ sealed class ResultWrapper<out T> {
         )
     }
 
-    /**
-     * todo: Suspend functional parameters with default values are not yet supported in inline functions
-     *  поэтому для оптимизации необходимо обернуть вызовы с меньшим количеством аргументов
-     */
+    // оптимизация
     suspend inline fun checkResult(
         crossinline onSuccess: (suspend (T) -> Unit),
         crossinline onHttpError: (suspend (code: Int?, HttpException?) -> Unit),

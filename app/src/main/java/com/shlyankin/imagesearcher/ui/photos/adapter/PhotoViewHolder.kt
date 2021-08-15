@@ -1,25 +1,37 @@
 package com.shlyankin.imagesearcher.ui.photos.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.shlyankin.imagesearcher.R
 import com.shlyankin.imagesearcher.databinding.ItemPhotoBinding
 import com.shlyankin.imagesearcher.domain.model.ui.UiPhoto
+import com.shlyankin.imagesearcher.glide.GlideApp
 
 class PhotoViewHolder(
     private val viewBinding: ItemPhotoBinding
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
+    private companion object {
+        const val SIZE_MULTIPLIER = 0.5f
+        const val HEIGHT = 1280
+        const val WIDTH = 1280
+    }
+
     private fun loadImage(uri: String, errorUri: String? = null): Boolean {
         viewBinding.run {
-            Glide.with(root)
+            GlideApp.with(root)
                 .load(uri)
-                .placeholder(R.drawable.ic_launcher)
                 .apply {
                     if (errorUri != null) {
-                        error(Glide.with(root).load(errorUri))
+                        error(
+                            GlideApp
+                                .with(root)
+                                .load(errorUri)
+                        )
                     }
                 }
+                .override(WIDTH, HEIGHT)
+                .thumbnail(SIZE_MULTIPLIER)
+                .placeholder(R.drawable.ic_launcher)
                 .error(R.drawable.ic_error)
                 .centerCrop()
                 .into(image)
@@ -36,7 +48,7 @@ class PhotoViewHolder(
             userName.text = photo.user.name
             photo.localPath?.let { localPath ->
                 loadImage(localPath, errorUri = photo.urls.regular)
-            } ?: loadImage(photo.urls.regular)
+            } ?: loadImage(photo.urls.full)
             addToFavourite.setImageResource(
                 if (photo.isFavourite) {
                     R.drawable.ic_favourite

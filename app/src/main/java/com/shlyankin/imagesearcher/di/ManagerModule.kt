@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -17,6 +18,9 @@ class ManagerModule {
 
     @Singleton
     @Provides
-    fun provideFileManager(fileApi: FileApi, @ApplicationContext context: Context): FileManager =
-        FileManagerImpl(fileApi, context)
+    fun provideFileManager(
+        fileApi: FileApi,
+        @ApplicationContext context: Context,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): FileManager = FileManagerImpl(fileApi, context, ioDispatcher)
 }

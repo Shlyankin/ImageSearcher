@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +15,8 @@ import com.shlyankin.imagesearcher.databinding.FPhotosBinding
 import com.shlyankin.imagesearcher.ui.BindingFragment
 import com.shlyankin.imagesearcher.ui.photos.adapter.PhotosAdapter
 import com.shlyankin.imagesearcher.ui.photos.adapter.load.PhotosLoadStateAdapter
+import com.shlyankin.imagesearcher.utils.observeLatest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PhotosFragment : BindingFragment<FPhotosBinding>() {
@@ -54,13 +52,11 @@ class PhotosFragment : BindingFragment<FPhotosBinding>() {
     }
 
     private fun observeViewModel() {
-        lifecycleScope.launch {
-            viewModel.photos.collectLatest {
+        viewModel.run {
+            observeLatest(photos) {
                 photosAdapter.submitData(it)
             }
-        }
-        lifecycleScope.launch {
-            viewModel.currentState.collectLatest {
+            observeLatest(currentState) {
                 binding.run {
                     retryButton.isVisible = it.retryVisible
                     loadingIndicator.isVisible = it.progressVisible

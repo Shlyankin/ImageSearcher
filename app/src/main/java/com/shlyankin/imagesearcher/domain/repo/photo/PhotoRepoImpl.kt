@@ -4,11 +4,9 @@ import com.shlyankin.imagesearcher.domain.model.NetPhoto
 import com.shlyankin.imagesearcher.domain.net.ResultWrapper
 import com.shlyankin.imagesearcher.domain.net.UnsplashApi
 import com.shlyankin.imagesearcher.domain.net.safeApiCall
-import kotlinx.coroutines.CoroutineDispatcher
 
 class PhotoRepoImpl(
-    private val unsplashApi: UnsplashApi,
-    private val ioDispatcher: CoroutineDispatcher
+    private val unsplashApi: UnsplashApi
 ) : PhotoRepo {
 
     override suspend fun getPhotos(page: Int): ResultWrapper<List<NetPhoto>> {
