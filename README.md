@@ -8,10 +8,10 @@ For building project you need to create apikeys.properties with 2 values "unspla
 Communicate with me or create own in [unsplash.com](unsplash.com)
 
 ### Modules:
-- [util](com/shlyankin/util)
-- [domain](com/shlyankin/domain)
-- [photos](com/shlyankin/photos)
-- [app](com/shlyankin/app)
+- [util](https://github.com/Shlyankin/ImageSearcher/tree/unit-testing/util)
+- [domain](https://github.com/Shlyankin/ImageSearcher/tree/unit-testing/domain)
+- [photos](https://github.com/Shlyankin/ImageSearcher/tree/unit-testing/photos)
+- [app](https://github.com/Shlyankin/ImageSearcher/tree/unit-testing/app)
 
 ### Project has UnitTest with Coroutines:
 [here](com/shlyankin/photos/PhotosViewModelTest.kt)
