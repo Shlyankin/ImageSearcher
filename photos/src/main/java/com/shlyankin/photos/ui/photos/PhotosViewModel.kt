@@ -6,13 +6,13 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.shlyankin.photos.di.DefaultDispatcher
 import com.shlyankin.photos.di.IoDispatcher
 import com.shlyankin.photos.model.UiPhoto
 import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCase
 import com.shlyankin.photos.ui.usecase.photo.PhotosUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -23,7 +23,8 @@ import javax.inject.Inject
 internal class PhotosViewModel @Inject constructor(
     photosUseCase: PhotosUseCase,
     private val favouriteUseCase: FavouriteUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val logger: Logger = Logger.getLogger(PhotosViewModel::class.java.name)
@@ -54,7 +55,7 @@ internal class PhotosViewModel @Inject constructor(
     }
 
     fun onLoadStateChanged(loadState: CombinedLoadStates) {
-        viewModelScope.launch {
+        viewModelScope.launch(defaultDispatcher) {
             if (loadState.refresh is LoadState.Loading) {
                 _currentState.emit(
                     PhotoUiState(
