@@ -11,7 +11,7 @@ import com.shlyankin.myapplication.database.model.FavouritePhoto
     entities = [
         FavouritePhoto::class,
     ],
-    exportSchema = true,
+    exportSchema = false,
     version = 10
 )
 @TypeConverters(DateConverter::class)
