@@ -1,0 +1,29 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Gradle Android
+        uses: Raul6469/android-gradle-action@2.0.0
+        with:
+          script: build --stacktrace
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Gradle Android
+        uses: Raul6469/android-gradle-action@2.0.0
+        with:
+          script: test --stacktrace
