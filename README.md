@@ -10,11 +10,11 @@ Communicate with me or create own in [unsplash.com](https://unsplash.com/)
 ### Modules:
 - [util](./util)
 - [domain](./domain)
-- [photos](./src/test/java/com/shlyankin/photos/PhotosViewModelTest.kt)
+- [photos](./src/photos)
 - [app](./app)
 
 ### Project has UnitTest with Coroutines:
-[PhotosViewModelTest](./photos/PhotosViewModelTest.kt)
+[PhotosViewModelTest](./src/test/java/com/shlyankin/photos/PhotosViewModelTest.kt)
 
 ### Tasks:
 1) Create Model Layer with Paging (ready)
