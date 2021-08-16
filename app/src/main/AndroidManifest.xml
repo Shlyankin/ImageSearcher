@@ -23,6 +23,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.shlyankin.imagesearcher.ui.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

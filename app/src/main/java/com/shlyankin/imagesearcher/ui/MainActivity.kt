@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import com.shlyankin.imagesearcher.databinding.ActivityMainBinding
 import com.shlyankin.imagesearcher.ui.main.MainFragment
-import com.shlyankin.imagesearcher.utils.getNonGrantedPermissions
+import com.shlyankin.util.utils.getNonGrantedPermissions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
