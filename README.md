@@ -5,7 +5,7 @@ MVVM, SingleActivity, Paging3, Coroutines, Hilt DI, Room, Gson, Multi-Modules
 
 ## ATTENTION!!!
 For building project you need to create apikeys.properties with 2 values "unsplash.AccessKey" and "unsplash.SecretKey".
-Communicate with me or create own in [unsplash.com](unsplash.com)
+Communicate with me or create own in [unsplash.com](https://unsplash.com/)
 
 ### Modules:
 - [util](./util)
