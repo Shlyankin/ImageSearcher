@@ -1,22 +1,22 @@
 # ImageSearcher. Master has stable app. Some features in develop.
 
-# ATTENTION!!!
-For building project you need to create apikeys.properties with 2 values "unsplash.AccessKey" and "unsplash.SecretKey".
-Communicate with me or create own in [a link](unsplash.com)
-
 Code-style Pet-project.
 MVVM, SingleActivity, Paging3, Coroutines, Hilt DI, Room, Gson, Multi-Modules
 
-## Modules:
+## ATTENTION!!!
+For building project you need to create apikeys.properties with 2 values "unsplash.AccessKey" and "unsplash.SecretKey".
+Communicate with me or create own in [a link](unsplash.com)
+
+### Modules:
 [here](com/shlyankin/photos)
 [here](com/shlyankin/util)
 [here](com/shlyankin/photos)
 [here](com/shlyankin/app)
 
-## Project has UnitTest with Coroutines:
+### Project has UnitTest with Coroutines:
 [here](com/shlyankin/photos/PhotosViewModelTest.kt)
 
-## Tasks:
+### Tasks:
 1) Create Model Layer with Paging (ready)
 2) Create Photos List Screen (ready)
 3) Create Favourite List Screen (ready)
