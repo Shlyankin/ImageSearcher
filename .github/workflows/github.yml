@@ -16,13 +16,14 @@ jobs:
       - name: Gradle Android
         uses: Raul6469/android-gradle-action@2.0.0
         with:
-          script: ./gradlew build
+          script: build
   test:
     name: Run Unit Tests
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v1
       - name: Gradle Android
         uses: Raul6469/android-gradle-action@2.0.0
         with:
-          script: ./gradlew test --stacktrace
+          script: test --stacktrace
