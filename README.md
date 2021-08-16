@@ -14,7 +14,7 @@ Communicate with me or create own in [unsplash.com](https://unsplash.com/)
 - [app](./app)
 
 ### Project has UnitTest with Coroutines:
-[here](com/shlyankin/photos/PhotosViewModelTest.kt)
+[PhotosViewModelTest](./photos/PhotosViewModelTest.kt)
 
 ### Tasks:
 1) Create Model Layer with Paging (ready)
