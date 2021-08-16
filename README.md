@@ -1,4 +1,5 @@
-# ImageSearcher. Master has stable app. Some features in develop.
+# ImageSearcher. Master has stable app.
+# Some features in develop.
 
 Code-style Pet-project.
 MVVM, SingleActivity, Paging3, Coroutines, Hilt DI, Room, Gson, Multi-Modules
