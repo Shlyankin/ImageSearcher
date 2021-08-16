@@ -10,7 +10,7 @@ Communicate with me or create own in [unsplash.com](https://unsplash.com/)
 ### Modules:
 - [util](./util)
 - [domain](./domain)
-- [photos](./photos)
+- [photos](./src/test/java/com/shlyankin/photos/PhotosViewModelTest.kt)
 - [app](./app)
 
 ### Project has UnitTest with Coroutines:
