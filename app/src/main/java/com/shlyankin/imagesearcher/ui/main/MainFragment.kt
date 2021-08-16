@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import com.shlyankin.imagesearcher.databinding.FMainBinding
-import com.shlyankin.imagesearcher.ui.BindingFragment
+import com.shlyankin.util.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
