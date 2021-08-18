@@ -22,7 +22,7 @@ Create own in [unsplash.com](https://unsplash.com/)
 3) Create Favourite List Screen (ready)
 4) Multi-Modules (ready)
 ------------------------------------------
-5) Unit Tests (in progress. project has 1 test)
+5) Unit Tests (in progress. project has 3 tests)
 6) CI-CD config (ready)
 
 ------------------------------------------
