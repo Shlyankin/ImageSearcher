@@ -1,11 +1,11 @@
 # ImageSearcher. Master has stable app. Some features in develop.
 
 Code-style Pet-project.
-MVVM, SingleActivity, Paging3, Coroutines, Hilt DI, Room, Gson, Multi-Modules
+MVVM, SingleActivity, Paging3, Coroutines, Hilt DI, Room, Gson, Multi-Modules, CI-CD
 
-## ATTENTION!!!
+### ATTENTION!!!
 For building project you need to create apikeys.properties with 2 values "unsplash.AccessKey" and "unsplash.SecretKey".
-Communicate with me or create own in [unsplash.com](https://unsplash.com/)
+Create own in [unsplash.com](https://unsplash.com/)
 
 ### Modules:
 - [util](./util)
@@ -22,6 +22,7 @@ Communicate with me or create own in [unsplash.com](https://unsplash.com/)
 3) Create Favourite List Screen (ready)
 4.1) Multi-Modules (ready)
 4.2) Unit Tests (in progress. project has 1 test)
+4.3) CI-CD config (ready)
 ------------------------------------------
 5) Create About Photo Screen (maybe later)
 6) Create Searching (maybe later)
