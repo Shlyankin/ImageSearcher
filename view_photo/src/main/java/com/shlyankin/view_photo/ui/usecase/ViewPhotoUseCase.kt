@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface ViewPhotoUseCase {
 
-    fun getPhoto(photoId: String): Flow<UiPhoto>
+    val photo: Flow<UiPhoto>
 
-    suspend fun removeFromFavourite(id: String)
+    suspend fun addToFavourite()
 
-    suspend fun addToFavourite(photo: UiPhoto)
+    suspend fun removeFromFavourite()
+
+    suspend fun getPhoto(photoId: String)
 }

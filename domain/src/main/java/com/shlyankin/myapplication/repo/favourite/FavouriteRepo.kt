@@ -9,6 +9,8 @@ interface FavouriteRepo {
 
     fun getAll(): Flow<List<FavouritePhoto>>
 
+    suspend fun deleteFromFavourite(photoId: String)
+
     suspend fun deleteFromFavourite(photo: FavouritePhoto)
 
     suspend fun get(id: String): FavouritePhoto?

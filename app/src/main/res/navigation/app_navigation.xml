@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/main">
+
+    <action
+        android:id="@+id/to_view_photo"
+        app:destination="@id/view_photo" />
+
+    <fragment
+        android:id="@+id/main"
+        android:name="com.shlyankin.imagesearcher.ui.main.MainFragment" />
+
+    <fragment
+        android:id="@+id/view_photo"
+        android:name="com.shlyankin.view_photo.ui.view_photo.ViewPhotoFragment">
+
+        <argument
+            android:name="photoId"
+            app:argType="string" />
+
+    </fragment>
+</navigation>

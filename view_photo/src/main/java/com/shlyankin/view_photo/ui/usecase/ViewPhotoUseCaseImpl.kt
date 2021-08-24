@@ -1,11 +1,14 @@
 package com.shlyankin.view_photo.ui.usecase
 
+import com.shlyankin.myapplication.net.mapper.toEntity
+import com.shlyankin.myapplication.net.model.PhotoResponse
 import com.shlyankin.myapplication.repo.favourite.FavouriteRepo
 import com.shlyankin.myapplication.repo.photo.PhotoRepo
 import com.shlyankin.view_photo.mapper.PhotoMapper
-import com.shlyankin.view_photo.model.UiPhoto
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 
 internal class ViewPhotoUseCaseImpl(
     private val photoRepo: PhotoRepo,
@@ -13,21 +16,28 @@ internal class ViewPhotoUseCaseImpl(
     private val photoMapper: PhotoMapper
 ) : ViewPhotoUseCase {
 
-    override fun getPhoto(photoId: String): Flow<UiPhoto> {
-        return flow {
-            photoRepo.getPhoto(photoId).checkResult {
-                emit(photoMapper.convertFromPhotoToUiPhoto(it))
-            }
+    private val favouritePhotos = favouriteRepo.getAll()
+    private val _photoResp = MutableStateFlow<PhotoResponse?>(null)
+    override val photo = _photoResp.filterNotNull()
+        .combine(favouritePhotos) { photoResponse, favouritePhotos ->
+            photoMapper.convertFromPhotoToUiPhoto(photoResponse, favouritePhotos)
+        }
+
+    override suspend fun getPhoto(photoId: String) {
+        photoRepo.getPhoto(photoId).checkResult { photoResponse ->
+            _photoResp.emit(photoResponse)
         }
     }
 
-    override suspend fun addToFavourite(photo: UiPhoto) {
-        favouriteRepo.addToFavourite(photoMapper.convertFromUiPhoto(photo))
+    override suspend fun addToFavourite() {
+        _photoResp.firstOrNull()?.let {
+            favouriteRepo.addToFavourite(it.toEntity())
+        }
     }
 
-    override suspend fun removeFromFavourite(id: String) {
-        favouriteRepo.get(id)?.let {
-            favouriteRepo.deleteFromFavourite(it)
+    override suspend fun removeFromFavourite() {
+        _photoResp.firstOrNull()?.let {
+            favouriteRepo.deleteFromFavourite(it.id)
         }
     }
 }

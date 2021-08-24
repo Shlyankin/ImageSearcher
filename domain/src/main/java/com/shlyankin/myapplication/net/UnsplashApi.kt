@@ -31,5 +31,5 @@ internal interface UnsplashApi {
     ): List<PhotoResponse>
 
     @GET("/photos/{photoId}")
-    fun getPhoto(@Path(value = "photoId", encoded = true) photoId: String): PhotoResponse
+    suspend fun getPhoto(@Path(value = "photoId", encoded = true) photoId: String): PhotoResponse
 }

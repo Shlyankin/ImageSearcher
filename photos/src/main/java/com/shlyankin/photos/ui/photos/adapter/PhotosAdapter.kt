@@ -7,6 +7,7 @@ import com.shlyankin.photos.databinding.ItemPhotoBinding
 import com.shlyankin.photos.model.UiPhoto
 
 internal class PhotosAdapter(
+    private val itemClickListener: (photo: UiPhoto) -> Unit,
     private val onFavouriteClickListener: (photo: UiPhoto) -> Unit
 ) : PagingDataAdapter<UiPhoto, PhotoViewHolder>(PhotosDiffUtil()) {
 
@@ -21,7 +22,7 @@ internal class PhotosAdapter(
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         getItem(position)?.let { item ->
-            holder.bind(item, onFavouriteClickListener)
+            holder.bind(item, itemClickListener, onFavouriteClickListener)
         }
     }
 }

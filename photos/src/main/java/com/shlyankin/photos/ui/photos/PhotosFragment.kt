@@ -24,7 +24,12 @@ open class PhotosFragment : BindingFragment<FPhotosBinding>() {
 
     internal open val viewModel: PhotosViewModel by viewModels<PhotosViewModelImpl>()
     private val swipeRefreshViewModel by viewModels<SwipeRefreshViewModel>()
-    private val photosAdapter by lazy { PhotosAdapter(viewModel::addToFavouriteClicked) }
+    private val photosAdapter by lazy {
+        PhotosAdapter(
+            viewModel::onPhotoClicked,
+            viewModel::addToFavouriteClicked
+        )
+    }
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FPhotosBinding.inflate(inflater, container, false)

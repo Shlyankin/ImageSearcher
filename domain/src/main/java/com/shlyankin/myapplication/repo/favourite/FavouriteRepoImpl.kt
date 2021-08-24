@@ -23,6 +23,21 @@ internal class FavouriteRepoImpl(
         favouritePhotoDao.insertReplace(photo.copy(localPath = localPath))
     }
 
+    override suspend fun deleteFromFavourite(photoId: String) {
+        favouritePhotoDao.get(photoId)?.let { photo ->
+            fileManager.stopDownloadFile(photo.urls.full)
+            try {
+                File(photo.localPath).delete()
+            } catch (e: Exception) {
+                Log.e(
+                    FavouriteRepoImpl::class.java.name,
+                    "deleteFromFavourite Exception ${e.message}"
+                )
+            }
+        }
+        favouritePhotoDao.deleteById(photoId)
+    }
+
     override suspend fun deleteFromFavourite(photo: FavouritePhoto) {
         fileManager.stopDownloadFile(photo.urls.full)
         favouritePhotoDao.get(photo.id)?.let {

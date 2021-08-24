@@ -3,8 +3,13 @@ package com.shlyankin.view_photo.mapper
 import com.shlyankin.myapplication.database.model.FavouritePhoto
 import com.shlyankin.myapplication.net.model.PhotoResponse
 import com.shlyankin.view_photo.model.UiPhoto
+import com.shlyankin.view_photo.model.UiProfile
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class PhotoMapper {
+
+    private val userFriendlyDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
 
     fun convertFromPhotoToUiPhoto(
         photo: PhotoResponse,
@@ -14,46 +19,19 @@ internal class PhotoMapper {
         return convertFromPhotoToUiPhoto(photo, favouritePhoto?.localPath, favouritePhoto != null)
     }
 
-    fun convertFromPhotoToUiPhoto(
+    private fun convertFromPhotoToUiPhoto(
         photo: PhotoResponse,
         localPath: String?,
         isFavourite: Boolean = false
     ): UiPhoto =
         UiPhoto(
             photo.id,
-            photo.createdAt,
+            userFriendlyDateFormat.format(photo.createdAt),
             photo.description,
-            photo.urls,
-            photo.user,
+            photo.urls.full,
+            UiProfile(photo.user.name, photo.user.profileImage?.small),
             localPath,
             isFavourite
         )
-
-    fun convertFromFavouritePhotoToUiPhoto(photo: List<FavouritePhoto>): List<UiPhoto> =
-        photo.map {
-            convertFromFavouritePhotoToUiPhoto(it)
-        }
-
-    fun convertFromFavouritePhotoToUiPhoto(photo: FavouritePhoto): UiPhoto =
-        UiPhoto(
-            photo.id,
-            photo.createdAt,
-            photo.description,
-            photo.urls,
-            photo.user,
-            localPath = photo.localPath,
-            isFavourite = true
-        )
-
-    fun convertFromUiPhoto(uiPhoto: UiPhoto): FavouritePhoto {
-        return FavouritePhoto(
-            uiPhoto.id,
-            uiPhoto.createdAt,
-            uiPhoto.description,
-            uiPhoto.urls,
-            uiPhoto.user,
-            uiPhoto.localPath ?: ""
-        )
-    }
 
 }
