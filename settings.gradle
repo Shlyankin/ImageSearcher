@@ -3,3 +3,5 @@ rootProject.name = "ImageSearcher"
 include ':domain'
 include ':util'
 include ':photos'
+include ':view_photo'
+include ':navigation'

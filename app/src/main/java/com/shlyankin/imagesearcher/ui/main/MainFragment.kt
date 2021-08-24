@@ -9,13 +9,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainFragment : BindingFragment<FMainBinding>() {
 
-    private val pagerAdapter by lazy { MainPagerAdapter(requireActivity()) }
-
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?): FMainBinding =
         FMainBinding.inflate(inflater, container, false)
 
     override fun FMainBinding.onInitViews() {
-        viewPager.adapter = pagerAdapter
+        viewPager.adapter = MainPagerAdapter(requireActivity())
         viewPager.isUserInputEnabled = false
         bottomNavigationBar.setOnItemSelectedListener {
             PagerFragments.findById(it.itemId)?.let {

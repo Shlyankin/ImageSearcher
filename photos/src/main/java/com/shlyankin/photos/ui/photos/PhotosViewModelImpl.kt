@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.shlyankin.navigation.AppScreen
+import com.shlyankin.navigation.events.NavigationEventEmitter
 import com.shlyankin.photos.di.IoDispatcher
 import com.shlyankin.photos.model.UiPhoto
 import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCase
@@ -20,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class PhotosViewModelImpl @Inject constructor(
     photosUseCase: PhotosUseCase,
+    private val navigationEventEmitter: NavigationEventEmitter,
     private val favouriteUseCase: FavouriteUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel(), PhotosViewModel {
@@ -35,6 +38,12 @@ internal class PhotosViewModelImpl @Inject constructor(
             photo.copy(isFavourite = favourite.find { it.id == photo.id } != null)
         }
     }.flowOn(ioDispatcher)
+
+    override fun onPhotoClicked(uiPhoto: UiPhoto) {
+        viewModelScope.launch {
+            navigationEventEmitter.navigateTo(AppScreen.ViewPhoto(uiPhoto.id))
+        }
+    }
 
     override fun addToFavouriteClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch(ioDispatcher) {

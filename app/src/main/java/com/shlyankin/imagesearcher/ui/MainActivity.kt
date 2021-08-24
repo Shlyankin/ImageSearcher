@@ -2,11 +2,15 @@ package com.shlyankin.imagesearcher.ui
 
 import android.Manifest
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.shlyankin.imagesearcher.databinding.ActivityMainBinding
-import com.shlyankin.imagesearcher.ui.main.MainFragment
+import com.shlyankin.util.navigation.NavigationInfo
+import com.shlyankin.util.navigation.NavigationViewModel
 import com.shlyankin.util.utils.getNonGrantedPermissions
+import com.shlyankin.util.utils.observe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,22 +21,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val mainFragment by lazy { MainFragment() }
+    private val navigationViewModel: NavigationViewModel by viewModels<MainNavigationViewModel>()
+    private val navController: NavController by lazy { findNavController(binding.rootContainer.id) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        initViews()
+        observe(navigationViewModel.navigateEvent) {
+            handleNavigation(it)
+        }
         checkPermissions()
     }
 
-    private fun initViews() {
-        supportFragmentManager.commit {
-            replace(
-                binding.rootContainer.id,
-                mainFragment,
-                mainFragment.javaClass.name
-            )
+    private fun handleNavigation(navInfo: NavigationInfo) {
+        when (navInfo) {
+            is NavigationInfo.NavigationTo -> {
+                navController.navigate(navInfo.destionationId, navInfo.bundle)
+            }
+            is NavigationInfo.NavigationPopTo -> {
+                navController.popBackStack(navInfo.destionationId, false)
+            }
+            is NavigationInfo.NavigationPop -> {
+                if (!navController.popBackStack()) {
+                    navigationViewModel.onLastFragmentInBackStackTriedToClose()
+                }
+            }
         }
     }
 
@@ -43,6 +56,4 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(nonGrantedPermissions, PERMISSIONS_CODE)
         }
     }
-
-
 }

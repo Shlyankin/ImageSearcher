@@ -8,5 +8,7 @@ internal interface PhotosViewModel {
 
     val photos: Flow<PagingData<UiPhoto>>
 
+    fun onPhotoClicked(uiPhoto: UiPhoto)
+
     fun addToFavouriteClicked(uiPhoto: UiPhoto)
 }

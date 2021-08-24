@@ -5,6 +5,7 @@ import com.shlyankin.photos.R
 import com.shlyankin.photos.databinding.ItemPhotoBinding
 import com.shlyankin.photos.model.UiPhoto
 import com.shlyankin.util.glide.GlideApp
+import com.shlyankin.util.utils.alternativeUri
 
 internal class PhotoViewHolder(
     private val viewBinding: ItemPhotoBinding
@@ -20,15 +21,7 @@ internal class PhotoViewHolder(
         viewBinding.run {
             GlideApp.with(root)
                 .load(uri)
-                .apply {
-                    if (errorUri != null) {
-                        error(
-                            GlideApp
-                                .with(root)
-                                .load(errorUri)
-                        )
-                    }
-                }
+                .alternativeUri(root, errorUri)
                 .override(WIDTH, HEIGHT)
                 .thumbnail(SIZE_MULTIPLIER)
                 .placeholder(R.drawable.ic_launcher)
@@ -41,9 +34,11 @@ internal class PhotoViewHolder(
 
     fun bind(
         photo: UiPhoto,
+        itemClickListener: (photo: UiPhoto) -> Unit,
         onFavouriteClickListener: (photo: UiPhoto) -> Unit
     ) {
         viewBinding.run {
+            root.setOnClickListener { itemClickListener.invoke(photo) }
             title.text = photo.description
             userName.text = photo.user.name
             photo.localPath?.let { localPath ->
