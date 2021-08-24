@@ -7,9 +7,13 @@ import com.shlyankin.view_photo.model.UiProfile
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal class PhotoMapper {
+internal class PhotoMapper(locale: Locale) {
 
-    private val userFriendlyDateFormat = SimpleDateFormat("dd MMMM yyyy", Locale("ru"))
+    private companion object {
+        const val USER_FRIENDLY_DATE_FORMAT = "dd MMMM yyyy"
+    }
+
+    private val userFriendlyDateFormat = SimpleDateFormat(USER_FRIENDLY_DATE_FORMAT, locale)
 
     fun convertFromPhotoToUiPhoto(
         photo: PhotoResponse,
