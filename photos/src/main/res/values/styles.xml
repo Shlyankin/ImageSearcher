@@ -27,4 +27,15 @@
     <style name="SmallText">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="SingleLineText">
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="ImageSearcherProgressBar">
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
+        <item name="hideAnimationBehavior">inward</item>
+        <item name="showAnimationBehavior">outward</item>
+    </style>
 </resources>

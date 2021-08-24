@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="5dp"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:layout_constraintTop_toTopOf="parent">
 
@@ -41,8 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            app:layout_constraintTop_toBottomOf="@id/descriptionRoot"
             android:contentDescription="@string/image"
+            app:layout_constraintTop_toBottomOf="@id/descriptionRoot"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <ImageView
@@ -51,12 +52,12 @@
             android:layout_height="48dp"
             android:layout_gravity="end"
             android:layout_marginHorizontal="10dp"
-            android:padding="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/add_to_favourite"
+            android:padding="10dp"
             android:src="@drawable/ic_empty_favourite"
             app:layout_constraintStart_toStartOf="@+id/image"
             app:layout_constraintTop_toBottomOf="@+id/image"
-            android:contentDescription="@string/add_to_favourite"
             app:tint="@color/colorPrimary" />
 
     </LinearLayout>

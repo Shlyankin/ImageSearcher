@@ -43,4 +43,6 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(nonGrantedPermissions, PERMISSIONS_CODE)
         }
     }
+
+
 }

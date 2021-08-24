@@ -19,6 +19,4 @@ class MainPagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activi
             else -> throw Exception("Check ${MainPagerAdapter::class}, cause adapters position is $position, but adapter has only ${PagerFragments.values().size} items")
         }
     }
-
-    val tabNamesId: Array<Int> = PagerFragments.values().map { it.fragmentNameId }.toTypedArray()
 }

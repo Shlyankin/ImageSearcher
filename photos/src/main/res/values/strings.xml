@@ -2,9 +2,10 @@
     <string name="photos">Фото</string>
     <string name="favourite_photos">избранные фото</string>
     <string name="search">Поиск</string>
-    <string name="loading_error_check_internet_connection">Ошибка при загрузке. Проверьте интернет соединение.</string>
+    <string name="loading_error">Ошибка при загрузке</string>
     <string name="image">Изображение</string>
     <string name="add_to_favourite">Добавить в избранное</string>
     <string name="end_of_images"><![CDATA[<Больше нет картинок>]]></string>
     <string name="page_loading_error">Ошибка при загрузке страницы</string>
+    <string name="retry">Повторить</string>
 </resources>

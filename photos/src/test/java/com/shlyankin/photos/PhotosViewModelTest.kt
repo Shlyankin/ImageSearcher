@@ -1,22 +1,19 @@
 package com.shlyankin.photos
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.paging.*
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
-import com.shlyankin.photos.ui.photos.PhotoUiState
-import com.shlyankin.photos.ui.photos.PhotosViewModel
+import com.shlyankin.photos.ui.photos.PhotosViewModelImpl
 import com.shlyankin.photos.ui.photos.adapter.PhotosDiffUtil
 import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCase
 import com.shlyankin.photos.ui.usecase.photo.PhotosUseCase
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 class PhotosViewModelTest {
 
     companion object {
-        private lateinit var viewModel: PhotosViewModel
+        private lateinit var viewModel: PhotosViewModelImpl
     }
 
     @Rule
@@ -56,10 +53,9 @@ class PhotosViewModelTest {
             mockAll()
             favouritePhotosFlow.emit(favouritePhotos)
             photosFlow.emit(PagingData.from(photos))
-            viewModel = PhotosViewModel(
+            viewModel = PhotosViewModelImpl(
                 photosUseCase,
                 favouriteUseCase,
-                coroutineRule.testDispatcher,
                 coroutineRule.testDispatcher
             )
         }
@@ -112,7 +108,7 @@ class PhotosViewModelTest {
                 val differ = createDiffer()
                 differ.submitData(it)
                 advanceUntilIdle()
-                val photoFromVM = differ.snapshot().items.find { it.id == uiPhoto2.id }
+                val photoFromVM = differ.snapshot().items.find { photo -> photo.id == uiPhoto2.id }
                 assertEquals(true, photoFromVM?.isFavourite)
             }
             viewModel.addToFavouriteClicked(uiPhoto2)
@@ -120,99 +116,10 @@ class PhotosViewModelTest {
                 val differ = createDiffer()
                 differ.submitData(it)
                 advanceUntilIdle()
-                val photoFromVM = differ.snapshot().items.find { it.id == uiPhoto2.id }
+                val photoFromVM = differ.snapshot().items.find { photo -> photo.id == uiPhoto2.id }
                 assertEquals(false, photoFromVM?.isFavourite)
             }
         }
     }
 
-    @Test
-    fun onLoadStateChangedRefreshing() {
-        coroutineRule.scope.launch {
-            viewModel.currentState.collect {
-                assertEquals(
-                    PhotoUiState(
-                        progressVisible = true,
-                        retryVisible = false,
-                        errorVisible = false
-                    ), it
-                )
-            }
-            cancel()
-        }
-        coroutineRule.runBlockingTest {
-            viewModel.onLoadStateChanged(
-                CombinedLoadStates(
-                    LoadState.Loading,
-                    LoadState.NotLoading(false),
-                    LoadState.NotLoading(false),
-                    LoadStates(
-                        LoadState.NotLoading(false),
-                        LoadState.NotLoading(false),
-                        LoadState.NotLoading(false)
-                    )
-                )
-            )
-        }
-    }
-
-    @Test
-    fun onLoadStateChangedLoadingRefreshingError() {
-        coroutineRule.scope.launch {
-            viewModel.currentState.collect {
-                assertEquals(
-                    PhotoUiState(
-                        progressVisible = false,
-                        retryVisible = true,
-                        errorVisible = true
-                    ), it
-                )
-                cancel()
-            }
-        }
-        coroutineRule.runBlockingTest {
-            viewModel.onLoadStateChanged(
-                CombinedLoadStates(
-                    LoadState.Error(Exception()),
-                    LoadState.NotLoading(false),
-                    LoadState.NotLoading(false),
-                    LoadStates(
-                        LoadState.NotLoading(false),
-                        LoadState.NotLoading(false),
-                        LoadState.NotLoading(false)
-                    )
-                )
-            )
-        }
-    }
-
-    @Test
-    fun onLoadStateChangedLoadingOtherError() {
-        coroutineRule.scope.launch {
-            viewModel.currentState.collect {
-                assertEquals(
-                    PhotoUiState(
-                        progressVisible = false,
-                        retryVisible = false,
-                        errorVisible = true
-                    ), it
-                )
-                cancel()
-            }
-        }
-        coroutineRule.runBlockingTest {
-            viewModel.onLoadStateChanged(
-                CombinedLoadStates(
-                    LoadState.NotLoading(false),
-                    LoadState.NotLoading(false),
-                    LoadState.Error(Exception()),
-                    LoadStates(
-                        LoadState.NotLoading(false),
-                        LoadState.NotLoading(false),
-                        LoadState.NotLoading(false)
-                    )
-                )
-            )
-        }
-    }
 }
