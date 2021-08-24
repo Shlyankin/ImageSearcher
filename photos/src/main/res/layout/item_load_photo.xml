@@ -2,72 +2,64 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="100dp">
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/errorGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="error_image,error_text, retryButton" />
+        app:constraint_referenced_ids="error_text, retryButton" />
 
-    <ImageView
-        android:id="@+id/error_image"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:contentDescription="@string/loading_error_check_internet_connection"
-        android:src="@drawable/ic_error"
+        android:layout_marginEnd="100dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:padding="10dp"
+        android:text="@string/loading_error"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/retryButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/error_text"
+        android:id="@+id/end_page_text"
+        style="@style/SingleLineText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:ellipsize="end"
-        android:lines="1"
-        android:text="@string/loading_error_check_internet_connection"
-        app:layout_constraintBottom_toBottomOf="@id/error_image"
-        app:layout_constraintEnd_toStartOf="@id/retryButton"
-        app:layout_constraintStart_toEndOf="@id/error_image"
-        app:layout_constraintTop_toTopOf="@id/error_image" />
+        android:text="@string/end_of_images"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/end_page_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:ellipsize="end"
-        android:lines="1"
-        android:text="@string/end_of_images"
-        app:layout_constraintBottom_toBottomOf="@id/error_image"
-        app:layout_constraintEnd_toStartOf="@id/retryButton"
-        app:layout_constraintStart_toEndOf="@id/error_image"
-        app:layout_constraintTop_toTopOf="@id/error_image" />
-
-    <ImageView
         android:id="@+id/retryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/loading_error_check_internet_connection"
+        android:contentDescription="@string/loading_error"
         android:padding="10dp"
-        android:src="@drawable/ic_retry"
-        app:layout_constraintBottom_toBottomOf="@id/error_image"
+        android:text="@string/retry"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/error_image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/circularProgressIndicator"
+        style="@style/ImageSearcherProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:hideAnimationBehavior="inward"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:showAnimationBehavior="outward" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
