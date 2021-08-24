@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ImageSearcher</string>
     <string name="photos">Фото</string>
-    <string name="favourite_photos">избранные фото</string>
+    <string name="favourite_photos">Избранные фото</string>
     <string name="search">Поиск</string>
     <string name="end_of_images"><![CDATA[<Больше нет картинок>]]></string>
 </resources>

@@ -2,7 +2,6 @@ package com.shlyankin.imagesearcher.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.google.android.material.tabs.TabLayoutMediator
 import com.shlyankin.imagesearcher.databinding.FMainBinding
 import com.shlyankin.util.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,10 +15,13 @@ class MainFragment : BindingFragment<FMainBinding>() {
         FMainBinding.inflate(inflater, container, false)
 
     override fun FMainBinding.onInitViews() {
-        binding.viewPager.adapter = pagerAdapter
-        TabLayoutMediator(binding.tabs, viewPager) { tab, position ->
-            tab.text = getString(pagerAdapter.tabNamesId[position])
-            viewPager.setCurrentItem(tab.position, true)
-        }.attach()
+        viewPager.adapter = pagerAdapter
+        viewPager.isUserInputEnabled = false
+        bottomNavigationBar.setOnItemSelectedListener {
+            PagerFragments.findById(it.itemId)?.let {
+                viewPager.setCurrentItem(it.ordinal, false)
+                return@let true
+            } ?: false
+        }
     }
 }
