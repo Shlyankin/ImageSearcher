@@ -6,15 +6,15 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.example.imagesearcher"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.$versionCode"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -79,6 +79,31 @@ dependencies {
     // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
+    // ************Compose************
+
+    implementation 'androidx.compose.ui:ui:1.0.5'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.0.5'
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation 'androidx.compose.foundation:foundation:1.0.5'
+    // Material Design
+    implementation 'androidx.compose.material:material:1.0.5'
+    // Material design icons
+    implementation 'androidx.compose.material:material-icons-core:1.0.5'
+    implementation 'androidx.compose.material:material-icons-extended:1.0.5'
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
+    // Integration with observables
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.5'
+    implementation 'androidx.compose.runtime:runtime-rxjava2:1.0.5'
+    // Navigation
+    implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+
+    // ************End Compose************
+
     // Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

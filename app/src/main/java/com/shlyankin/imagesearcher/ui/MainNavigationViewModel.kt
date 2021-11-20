@@ -34,6 +34,9 @@ class MainNavigationViewModel @Inject constructor(
                             )
                         )
                     }
+                    AppScreen.MainScreen -> {
+                        TODO()
+                    }
                 }
             }
         }
