@@ -2,6 +2,7 @@ package com.shlyankin.myapplication.net
 
 import com.shlyankin.myapplication.net.model.PhotoResponse
 import com.shlyankin.myapplication.net.model.SearchPhotosResponse
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,19 +18,19 @@ internal interface UnsplashApi {
      * todo: апи поиска фото. Сейчас функционал не реализован
      */
     @GET("/search/photos")
-    suspend fun randomPhotos(
+    fun randomPhotos(
         @Query("query") query: String,
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 10
-    ): SearchPhotosResponse
+    ): Single<SearchPhotosResponse>
 
 
     @GET("/photos")
-    suspend fun randomPhotos(
+    fun randomPhotos(
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 10
-    ): List<PhotoResponse>
+    ): Single<List<PhotoResponse>>
 
     @GET("/photos/{photoId}")
-    suspend fun getPhoto(@Path(value = "photoId", encoded = true) photoId: String): PhotoResponse
+    fun getPhoto(@Path(value = "photoId", encoded = true) photoId: String): Single<PhotoResponse>
 }

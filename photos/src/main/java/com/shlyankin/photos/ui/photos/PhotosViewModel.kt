@@ -2,11 +2,11 @@ package com.shlyankin.photos.ui.photos
 
 import androidx.paging.PagingData
 import com.shlyankin.photos.model.UiPhoto
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Flowable
 
 internal interface PhotosViewModel {
 
-    val photos: Flow<PagingData<UiPhoto>>
+    val photos: Flowable<PagingData<UiPhoto>>
 
     fun onPhotoClicked(uiPhoto: UiPhoto)
 

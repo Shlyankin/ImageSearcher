@@ -1,10 +1,10 @@
 package com.shlyankin.util.navigation
 
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.LiveData
 
 interface NavigationViewModel {
 
     fun onLastFragmentInBackStackTriedToClose() = Unit
 
-    val navigateEvent: Flow<NavigationInfo>
+    val navigateEvent: LiveData<NavigationInfo>
 }

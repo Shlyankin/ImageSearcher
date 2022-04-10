@@ -3,62 +3,36 @@ package com.shlyankin.myapplication.net.file
 import android.content.Context
 import android.os.Environment
 import com.shlyankin.myapplication.net.FileApi
-import com.shlyankin.util.net.safeApiCall
-import kotlinx.coroutines.*
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.ResponseBody
 import java.io.*
 
 internal class FileManagerImpl(
     private val fileApi: FileApi,
     private val context: Context,
-    private val ioDispatcher: CoroutineDispatcher
 ) : FileManager {
 
-    private val downloadQueue = mutableMapOf<String, Job>()
+    private val downloadQueue = mutableMapOf<String, Disposable>()
 
     override val favouriteImageFile: File? by lazy {
         context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
     }
 
-    @DelicateCoroutinesApi
     override fun downloadFile(url: String, filename: String): File {
         val localFile = File(favouriteImageFile, filename).apply {
             parentFile?.mkdirs()
             createNewFile()
         }
-        val job = GlobalScope.launch(ioDispatcher) {
-            safeApiCall {
-                fileApi.downloadFileByUrl(url)
-            }.checkResult { response ->
+        val disposable = fileApi.downloadFileByUrl(url)
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess { response ->
                 saveFile(localFile, response)
                 downloadQueue.remove(url)
-            }
-        }
-        downloadQueue[url] = job
-        return localFile
-    }
+            }.subscribe()
 
-    @DelicateCoroutinesApi
-    override suspend fun suspendDownloadFile(url: String, filename: String): File {
-        try {
-            val job = GlobalScope.async(ioDispatcher) {
-                val localFile = File(favouriteImageFile, filename)
-                localFile.runCatching {
-                    parentFile?.mkdirs()
-                    createNewFile()
-                }
-                safeApiCall {
-                    fileApi.downloadFileByUrl(url)
-                }.checkResult { response ->
-                    saveFile(localFile, response)
-                }
-                return@async localFile
-            }
-            downloadQueue[url] = job
-            return job.await()
-        } finally {
-            downloadQueue.remove(url)
-        }
+        downloadQueue[url] = disposable
+        return localFile
     }
 
     private fun saveFile(
@@ -97,6 +71,7 @@ internal class FileManagerImpl(
 
 
     override fun stopDownloadFile(url: String) {
+        downloadQueue[url]?.dispose()
         downloadQueue.remove(url)
     }
 }

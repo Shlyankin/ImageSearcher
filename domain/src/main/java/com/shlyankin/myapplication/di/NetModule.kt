@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -26,6 +27,7 @@ internal class NetModule {
         return Retrofit.Builder()
             .baseUrl(UnsplashApi.BASE_URL)
             .client(okHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(FileApi::class.java)
     }
@@ -36,6 +38,7 @@ internal class NetModule {
         return Retrofit.Builder()
             .baseUrl(UnsplashApi.BASE_URL)
             .client(okHttpClient)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(UnsplashApi::class.java)

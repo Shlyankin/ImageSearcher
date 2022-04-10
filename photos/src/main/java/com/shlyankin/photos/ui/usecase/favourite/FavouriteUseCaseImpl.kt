@@ -3,7 +3,8 @@ package com.shlyankin.photos.ui.usecase.favourite
 import com.shlyankin.myapplication.repo.favourite.FavouriteRepo
 import com.shlyankin.photos.mapper.PhotoMapper
 import com.shlyankin.photos.model.UiPhoto
-import kotlinx.coroutines.flow.map
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 internal class FavouriteUseCaseImpl(
     private val favouriteRepo: FavouriteRepo,
@@ -11,17 +12,20 @@ internal class FavouriteUseCaseImpl(
 ) : FavouriteUseCase {
 
     private val rawFavouritePhotos = favouriteRepo.getAll()
-    override val favouritePhotos = rawFavouritePhotos.map {
+    override val favouritePhotos: Observable<List<UiPhoto>> = rawFavouritePhotos.map {
         photosMapper.convertFromFavouritePhotoToUiPhoto(it).reversed()
     }
 
-    override suspend fun addToFavourite(photo: UiPhoto) {
+    override fun addToFavourite(photo: UiPhoto) {
         favouriteRepo.addToFavourite(photosMapper.convertFromUiPhoto(photo))
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
-    override suspend fun removeFromFavourite(id: String) {
-        favouriteRepo.get(id)?.let {
+    override fun removeFromFavourite(id: String) {
+        favouriteRepo.get(id).flatMapCompletable {
             favouriteRepo.deleteFromFavourite(it)
-        }
+        }.subscribeOn(Schedulers.io())
+            .subscribe()
     }
 }

@@ -1,8 +1,8 @@
 package com.shlyankin.navigation.events
 
 import com.shlyankin.navigation.AppScreen
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.subjects.Subject
 
 interface NavigationEventListener {
-    val navigationEvent: Flow<AppScreen>
+    val navigationEvent: Subject<AppScreen>
 }

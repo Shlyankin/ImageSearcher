@@ -1,20 +1,18 @@
 package com.shlyankin.photos.ui.photos.favourite
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.rxjava3.cachedIn
 import com.shlyankin.navigation.AppScreen
 import com.shlyankin.navigation.events.NavigationEventEmitter
-import com.shlyankin.photos.di.IoDispatcher
 import com.shlyankin.photos.model.UiPhoto
 import com.shlyankin.photos.ui.photos.PhotosViewModel
 import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.BackpressureStrategy
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,11 +20,14 @@ import javax.inject.Inject
 internal class FavouritePhotosViewModel @Inject constructor(
     private val favouriteUseCase: FavouriteUseCase,
     private val navigationEventEmitter: NavigationEventEmitter,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel(), PhotosViewModel {
 
-    override val photos: Flow<PagingData<UiPhoto>> = favouriteUseCase.favouritePhotos
-        .map { PagingData.from(it) }.flowOn(ioDispatcher)
+    override val photos = favouriteUseCase.favouritePhotos
+        .map { PagingData.from(it) }
+        .toFlowable(BackpressureStrategy.LATEST)
+        .cachedIn(viewModelScope)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
     override fun onPhotoClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch {
@@ -35,9 +36,6 @@ internal class FavouritePhotosViewModel @Inject constructor(
     }
 
     override fun addToFavouriteClicked(uiPhoto: UiPhoto) {
-        viewModelScope.launch(ioDispatcher) {
-            Log.i(FavouritePhotosViewModel::class.java.name, "changePhotoFavouriteState: $uiPhoto")
-            favouriteUseCase.removeFromFavourite(uiPhoto.id)
-        }
+        favouriteUseCase.removeFromFavourite(uiPhoto.id)
     }
 }

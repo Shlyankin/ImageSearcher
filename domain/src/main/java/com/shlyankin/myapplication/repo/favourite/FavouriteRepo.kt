@@ -1,17 +1,19 @@
 package com.shlyankin.myapplication.repo.favourite
 
 import com.shlyankin.myapplication.database.model.FavouritePhoto
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 interface FavouriteRepo {
 
-    suspend fun addToFavourite(photo: FavouritePhoto)
+    fun getAll(): Observable<List<FavouritePhoto>>
 
-    fun getAll(): Flow<List<FavouritePhoto>>
+    fun addToFavourite(photo: FavouritePhoto): Completable
 
-    suspend fun deleteFromFavourite(photoId: String)
+    fun deleteFromFavourite(photoId: String)
 
-    suspend fun deleteFromFavourite(photo: FavouritePhoto)
+    fun deleteFromFavourite(photo: FavouritePhoto): Completable
 
-    suspend fun get(id: String): FavouritePhoto?
+    fun get(id: String): Single<FavouritePhoto>
 }

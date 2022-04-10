@@ -2,22 +2,17 @@ package com.shlyankin.myapplication.repo.photo
 
 import com.shlyankin.myapplication.net.UnsplashApi
 import com.shlyankin.myapplication.net.model.PhotoResponse
-import com.shlyankin.util.net.ResultWrapper
-import com.shlyankin.util.net.safeApiCall
+import io.reactivex.rxjava3.core.Single
 
 internal class PhotoRepoImpl(
     private val unsplashApi: UnsplashApi
 ) : PhotoRepo {
 
-    override suspend fun getPhoto(photoId: String): ResultWrapper<PhotoResponse> {
-        return safeApiCall {
-            unsplashApi.getPhoto(photoId)
-        }
+    override fun getPhoto(photoId: String): Single<PhotoResponse> {
+        return unsplashApi.getPhoto(photoId)
     }
 
-    override suspend fun getPhotos(page: Int): ResultWrapper<List<PhotoResponse>> {
-        return safeApiCall {
-            unsplashApi.randomPhotos(page)
-        }
+    override fun getPhotos(page: Int): Single<List<PhotoResponse>> {
+        return unsplashApi.randomPhotos(page)
     }
 }

@@ -15,12 +15,15 @@ import com.shlyankin.photos.ui.photos.adapter.PhotosAdapter
 import com.shlyankin.photos.ui.photos.adapter.load.PhotosLoadStateAdapter
 import com.shlyankin.photos.ui.photos.refresh.SwipeRefreshViewModel
 import com.shlyankin.util.BindingFragment
+import com.shlyankin.util.utils.into
 import com.shlyankin.util.utils.observe
-import com.shlyankin.util.utils.observeLatest
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 @AndroidEntryPoint
 open class PhotosFragment : BindingFragment<FPhotosBinding>() {
+
+    private var disposable = CompositeDisposable()
 
     internal open val viewModel: PhotosViewModel by viewModels<PhotosViewModelImpl>()
     private val swipeRefreshViewModel by viewModels<SwipeRefreshViewModel>()
@@ -60,7 +63,7 @@ open class PhotosFragment : BindingFragment<FPhotosBinding>() {
 
     private fun observeViewModel() {
         swipeRefreshViewModel.run {
-            observeLatest(currentState) {
+            observe(currentState) {
                 binding.run {
                     photoSwipeRefresh.isRefreshing = it.isRefreshing
                     if (it.isError) {
@@ -77,11 +80,14 @@ open class PhotosFragment : BindingFragment<FPhotosBinding>() {
             }
         }
         viewModel.run {
-            observeLatest(photos) {
-                photosAdapter.submitData(it)
-            }
+            photos.subscribe {
+                photosAdapter.submitData(lifecycle, it)
+            } into disposable
         }
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        disposable.dispose()
+    }
 }

@@ -1,11 +1,11 @@
 package com.shlyankin.photos.ui.usecase.favourite
 
 import com.shlyankin.photos.model.UiPhoto
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Observable
 
 internal interface FavouriteUseCase {
-    val favouritePhotos: Flow<List<UiPhoto>>
+    val favouritePhotos: Observable<List<UiPhoto>>
 
-    suspend fun removeFromFavourite(id: String)
-    suspend fun addToFavourite(photo: UiPhoto)
+    fun removeFromFavourite(id: String)
+    fun addToFavourite(photo: UiPhoto)
 }

@@ -2,8 +2,8 @@ package com.shlyankin.photos.ui.usecase.photo
 
 import androidx.paging.PagingData
 import com.shlyankin.photos.model.UiPhoto
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Flowable
 
 internal interface PhotosUseCase {
-    val photos: Flow<PagingData<UiPhoto>>
+    val photos: Flowable<PagingData<UiPhoto>>
 }

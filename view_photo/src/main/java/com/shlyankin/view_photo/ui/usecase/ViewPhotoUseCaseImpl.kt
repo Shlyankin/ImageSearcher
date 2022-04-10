@@ -5,10 +5,10 @@ import com.shlyankin.myapplication.net.model.PhotoResponse
 import com.shlyankin.myapplication.repo.favourite.FavouriteRepo
 import com.shlyankin.myapplication.repo.photo.PhotoRepo
 import com.shlyankin.view_photo.mapper.PhotoMapper
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
+import com.shlyankin.view_photo.model.UiPhoto
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 internal class ViewPhotoUseCaseImpl(
     private val photoRepo: PhotoRepo,
@@ -17,27 +17,34 @@ internal class ViewPhotoUseCaseImpl(
 ) : ViewPhotoUseCase {
 
     private val favouritePhotos = favouriteRepo.getAll()
-    private val _photoResp = MutableStateFlow<PhotoResponse?>(null)
-    override val photo = _photoResp.filterNotNull()
-        .combine(favouritePhotos) { photoResponse, favouritePhotos ->
-            photoMapper.convertFromPhotoToUiPhoto(photoResponse, favouritePhotos)
-        }
 
-    override suspend fun getPhoto(photoId: String) {
-        photoRepo.getPhoto(photoId).checkResult { photoResponse ->
-            _photoResp.emit(photoResponse)
-        }
+    private val _photoResp = BehaviorSubject.create<PhotoResponse>()
+
+    override val photo: Observable<UiPhoto> = Observable.combineLatest(
+        _photoResp, favouritePhotos
+    ) { photoResponse, favouritePhotos ->
+        photoMapper.convertFromPhotoToUiPhoto(photoResponse, favouritePhotos)
     }
 
-    override suspend fun addToFavourite() {
-        _photoResp.firstOrNull()?.let {
+    override fun getPhoto(photoId: String) {
+        photoRepo.getPhoto(photoId).subscribeOn(Schedulers.io()).doOnSuccess {
+            _photoResp.onNext(it)
+        }.subscribe()
+    }
+
+    override fun addToFavourite() {
+        _photoResp.value?.let {
             favouriteRepo.addToFavourite(it.toEntity())
+                .subscribeOn(Schedulers.io())
+                .subscribe()
         }
     }
 
-    override suspend fun removeFromFavourite() {
-        _photoResp.firstOrNull()?.let {
-            favouriteRepo.deleteFromFavourite(it.id)
+    override fun removeFromFavourite() {
+        _photoResp.value?.let {
+            favouriteRepo.deleteFromFavourite(it.toEntity())
+                .subscribeOn(Schedulers.io())
+                .subscribe()
         }
     }
 }

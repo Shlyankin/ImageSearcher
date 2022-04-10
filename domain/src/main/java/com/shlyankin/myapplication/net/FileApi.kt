@@ -1,5 +1,6 @@
 package com.shlyankin.myapplication.net
 
+import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.Streaming
@@ -9,6 +10,6 @@ internal interface FileApi {
 
     @GET
     @Streaming
-    suspend fun downloadFileByUrl(@Url url: String): ResponseBody
+    fun downloadFileByUrl(@Url url: String): Single<ResponseBody>
 
 }

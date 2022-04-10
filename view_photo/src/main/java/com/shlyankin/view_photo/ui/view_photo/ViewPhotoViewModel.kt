@@ -1,42 +1,47 @@
 package com.shlyankin.view_photo.ui.view_photo
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.shlyankin.photos.di.IoDispatcher
+import com.shlyankin.util.utils.into
+import com.shlyankin.view_photo.model.UiPhoto
 import com.shlyankin.view_photo.ui.usecase.ViewPhotoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
 internal class ViewPhotoViewModel @Inject constructor(
     private val viewPhotoUseCase: ViewPhotoUseCase,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _photo = viewPhotoUseCase.photo.flowOn(ioDispatcher)
-    val photo = _photo.filterNotNull()
+    private val compositeDisposable = CompositeDisposable()
+
+    private val _photo = MutableLiveData<UiPhoto>()
+    val photo: LiveData<UiPhoto> = _photo
+
+    init {
+        viewPhotoUseCase.photo
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                _photo.value = it
+            }.subscribe() into compositeDisposable
+    }
 
     fun onArgumentsReceived(photoId: String) {
-        viewModelScope.launch(ioDispatcher) {
-            viewPhotoUseCase.getPhoto(photoId)
-        }
+        viewPhotoUseCase.getPhoto(photoId)
     }
 
     fun addToFavouriteClicked() {
-        viewModelScope.launch(ioDispatcher) {
-            _photo.firstOrNull()?.let {
-                if (it.isFavourite) {
-                    viewPhotoUseCase.removeFromFavourite()
-                } else {
-                    viewPhotoUseCase.addToFavourite()
-                }
+        _photo.value?.let {
+            if (it.isFavourite) {
+                viewPhotoUseCase.removeFromFavourite()
+            } else {
+                viewPhotoUseCase.addToFavourite()
             }
         }
     }
-
 }

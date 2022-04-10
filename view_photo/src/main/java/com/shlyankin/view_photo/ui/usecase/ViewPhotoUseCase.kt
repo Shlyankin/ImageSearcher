@@ -1,15 +1,15 @@
 package com.shlyankin.view_photo.ui.usecase
 
 import com.shlyankin.view_photo.model.UiPhoto
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Observable
 
 internal interface ViewPhotoUseCase {
 
-    val photo: Flow<UiPhoto>
+    val photo: Observable<UiPhoto>
 
-    suspend fun addToFavourite()
+    fun addToFavourite()
 
-    suspend fun removeFromFavourite()
+    fun removeFromFavourite()
 
-    suspend fun getPhoto(photoId: String)
+    fun getPhoto(photoId: String)
 }

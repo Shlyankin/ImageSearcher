@@ -1,13 +1,13 @@
 package com.shlyankin.navigation.events
 
 import com.shlyankin.navigation.AppScreen
-import kotlinx.coroutines.flow.MutableSharedFlow
+import io.reactivex.rxjava3.subjects.PublishSubject
 
 internal class NavigationEventHolder : NavigationEventEmitter, NavigationEventListener {
 
-    override suspend fun navigateTo(appScreen: AppScreen) {
-        navigationEvent.emit(appScreen)
+    override fun navigateTo(appScreen: AppScreen) {
+        navigationEvent.onNext(appScreen)
     }
 
-    override val navigationEvent = MutableSharedFlow<AppScreen>()
+    override val navigationEvent: PublishSubject<AppScreen> = PublishSubject.create()
 }

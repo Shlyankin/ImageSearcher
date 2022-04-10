@@ -4,7 +4,10 @@ import android.util.Log
 import com.shlyankin.myapplication.database.dao.FavouritePhotoDao
 import com.shlyankin.myapplication.database.model.FavouritePhoto
 import com.shlyankin.myapplication.net.file.FileManager
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.File
 
 internal class FavouriteRepoImpl(
@@ -17,47 +20,52 @@ internal class FavouriteRepoImpl(
         const val JPG_EXT = ".jpg"
     }
 
-    override suspend fun addToFavourite(photo: FavouritePhoto) {
+    override fun addToFavourite(photo: FavouritePhoto): Completable {
         val filename = "$APP_PHOTO_PREFIX${photo.user.name}${photo.id}$JPG_EXT"
         val localPath = fileManager.downloadFile(photo.urls.full, filename).path
-        favouritePhotoDao.insertReplace(photo.copy(localPath = localPath))
+        return favouritePhotoDao.insertReplace(photo.copy(localPath = localPath))
+            .subscribeOn(Schedulers.io())
     }
 
-    override suspend fun deleteFromFavourite(photoId: String) {
-        favouritePhotoDao.get(photoId)?.let { photo ->
-            fileManager.stopDownloadFile(photo.urls.full)
-            try {
-                File(photo.localPath).delete()
-            } catch (e: Exception) {
-                Log.e(
-                    FavouriteRepoImpl::class.java.name,
-                    "deleteFromFavourite Exception ${e.message}"
-                )
+    override fun deleteFromFavourite(photoId: String) {
+        favouritePhotoDao.get(photoId)
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess { photo ->
+                fileManager.stopDownloadFile(photo.urls.full)
+                try {
+                    File(photo.localPath).delete()
+                } catch (e: Exception) {
+                    Log.e(
+                        FavouriteRepoImpl::class.java.name,
+                        "deleteFromFavourite Exception ${e.message}"
+                    )
+                }
             }
-        }
         favouritePhotoDao.deleteById(photoId)
+            .subscribeOn(Schedulers.io())
     }
 
-    override suspend fun deleteFromFavourite(photo: FavouritePhoto) {
+    override fun deleteFromFavourite(photo: FavouritePhoto): Completable {
         fileManager.stopDownloadFile(photo.urls.full)
-        favouritePhotoDao.get(photo.id)?.let {
-            try {
-                File(it.localPath).delete()
-            } catch (e: Exception) {
-                Log.e(
-                    FavouriteRepoImpl::class.java.name,
-                    "deleteFromFavourite Exception ${e.message}"
-                )
-            }
+        try {
+            File(photo.localPath).delete()
+        } catch (e: Exception) {
+            Log.e(
+                FavouriteRepoImpl::class.java.name,
+                "deleteFromFavourite Exception ${e.message}"
+            )
         }
-        favouritePhotoDao.deleteById(photo.id)
+        return favouritePhotoDao.deleteById(photo.id)
+            .subscribeOn(Schedulers.io())
     }
 
-    override fun getAll(): Flow<List<FavouritePhoto>> {
+    override fun getAll(): Observable<List<FavouritePhoto>> {
         return favouritePhotoDao.getAll()
+            .subscribeOn(Schedulers.io())
     }
 
-    override suspend fun get(id: String): FavouritePhoto? {
+    override fun get(id: String): Single<FavouritePhoto> {
         return favouritePhotoDao.get(id)
+            .subscribeOn(Schedulers.io())
     }
 }
