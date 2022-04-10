@@ -1,11 +1,13 @@
 # ImageSearcher. Master has stable app. Some features in develop.
 
 2021 Pet-project.
-MVVM, SingleActivity, Paging3, Coroutines, Hilt DI, Room, Gson, Multi-Modules, CI-CD
+MVVM, SingleActivity, Paging3, RxJava3 (instead of Coroutines), Hilt DI, Room, Gson, Multi-Modules, CI-CD
 
 ### ATTENTION
 For building project you need to create apikeys.properties with 2 values "unsplash.AccessKey" and "unsplash.SecretKey".
 Create own in [unsplash.com](https://unsplash.com/)
+
+Need to fix tests for RxJava3
 
 ### Modules:
 - [util](./util)
@@ -23,7 +25,7 @@ Create own in [unsplash.com](https://unsplash.com/)
 2) Create Photos List Screen (ready)
 3) Create Favourite List Screen (ready)
 4) Multi-Modules (ready)
-5) Unit Tests (in progress. project has some tests. need more)
+5) Unit Tests (in progress. Need to fix tests for RxJava3)
 6) CI-CD config (ready)
 7) Create About Photo Screen (ready)
 ------------------------------------------
