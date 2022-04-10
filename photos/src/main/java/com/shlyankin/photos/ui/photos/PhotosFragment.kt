@@ -15,7 +15,6 @@ import com.shlyankin.photos.ui.photos.adapter.PhotosAdapter
 import com.shlyankin.photos.ui.photos.adapter.load.PhotosLoadStateAdapter
 import com.shlyankin.photos.ui.photos.refresh.SwipeRefreshViewModel
 import com.shlyankin.util.BindingFragment
-import com.shlyankin.util.utils.into
 import com.shlyankin.util.utils.observe
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -80,9 +79,9 @@ open class PhotosFragment : BindingFragment<FPhotosBinding>() {
             }
         }
         viewModel.run {
-            photos.subscribe {
+            observe(photosLiveData) {
                 photosAdapter.submitData(lifecycle, it)
-            } into disposable
+            }
         }
     }
 

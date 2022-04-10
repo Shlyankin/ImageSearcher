@@ -1,7 +1,9 @@
 package com.shlyankin.photos.ui.photos
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.map
 import androidx.paging.rxjava3.cachedIn
 import com.shlyankin.navigation.AppScreen
@@ -29,7 +31,7 @@ internal class PhotosViewModelImpl @Inject constructor(
 
     private val logger: Logger = Logger.getLogger(PhotosViewModelImpl::class.java.name)
 
-    override val photos = Flowable.combineLatest(
+    private val photos = Flowable.combineLatest(
         favouriteUseCase.favouritePhotos.toFlowable(BackpressureStrategy.LATEST),
         photosUseCase.photos.cachedIn(viewModelScope)
     ) { favourite, allPagingData ->
@@ -39,6 +41,14 @@ internal class PhotosViewModelImpl @Inject constructor(
         }
     }.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+
+    override val photosLiveData = MutableLiveData<PagingData<UiPhoto>>()
+
+    init {
+        photos.subscribe {
+            photosLiveData.value = it
+        }
+    }
 
     override fun onPhotoClicked(uiPhoto: UiPhoto) {
         navigationEventEmitter.navigateTo(AppScreen.ViewPhoto(uiPhoto.id))

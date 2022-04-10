@@ -1,5 +1,6 @@
 package com.shlyankin.photos.ui.photos.favourite
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -22,12 +23,20 @@ internal class FavouritePhotosViewModel @Inject constructor(
     private val navigationEventEmitter: NavigationEventEmitter,
 ) : ViewModel(), PhotosViewModel {
 
-    override val photos = favouriteUseCase.favouritePhotos
+    private val photos = favouriteUseCase.favouritePhotos
         .map { PagingData.from(it) }
         .toFlowable(BackpressureStrategy.LATEST)
         .cachedIn(viewModelScope)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+
+    override val photosLiveData = MutableLiveData<PagingData<UiPhoto>>()
+
+    init {
+        photos.subscribe {
+            photosLiveData.value = it
+        }
+    }
 
     override fun onPhotoClicked(uiPhoto: UiPhoto) {
         viewModelScope.launch {
