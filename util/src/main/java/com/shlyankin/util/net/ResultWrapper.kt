@@ -11,18 +11,43 @@ import retrofit2.HttpException
  *  поэтому для оптимизации необходимо обернуть вызовы с меньшим количеством аргументов
  */
 sealed class ResultWrapper<out T> {
-    data class Success<out T>(val value: T) : ResultWrapper<T>()
-    data class HttpError(val code: Int? = null, val exception: HttpException? = null) :
-        ResultWrapper<Nothing>()
 
-    data class GenericError(val exception: Throwable? = null) :
-        ResultWrapper<Nothing>()
+    data class Success<out T>(val value: T) : ResultWrapper<T>()
+
+    data class HttpError(
+        val code: Int? = null,
+        val exception: HttpException? = null,
+    ) : ResultWrapper<Nothing>()
+
+    data class GenericError(
+        val exception: Throwable? = null,
+    ) : ResultWrapper<Nothing>()
 
     object NetworkError : ResultWrapper<Nothing>()
 
+    suspend inline fun onSuccess(crossinline onSuccess: suspend (T) -> Unit): ResultWrapper<T> {
+        if (this is Success) {
+            onSuccess.invoke(this.value)
+        }
+        return this
+    }
+
+    suspend inline fun onError(crossinline onError: suspend (e: Throwable?) -> Unit): ResultWrapper<T> {
+        if (this is GenericError) {
+            onError.invoke(this.exception)
+        }
+        if (this is HttpError) {
+            onError.invoke(this.exception)
+        }
+        if (this is NetworkError) {
+            onError.invoke(null)
+        }
+        return this
+    }
+
     // оптимизация
     suspend inline fun checkResult(
-        crossinline onSuccess: (suspend (T) -> Unit)
+        crossinline onSuccess: (suspend (T) -> Unit),
     ) {
         checkResult(
             onSuccess = onSuccess,
@@ -35,7 +60,7 @@ sealed class ResultWrapper<out T> {
     // оптимизация
     suspend inline fun checkResult(
         crossinline onSuccess: (suspend (T) -> Unit),
-        crossinline onError: (suspend (e: Throwable?) -> Unit)
+        crossinline onError: (suspend (e: Throwable?) -> Unit),
     ) {
         checkResult(
             onSuccess = onSuccess,
@@ -56,7 +81,7 @@ sealed class ResultWrapper<out T> {
         crossinline onSuccess: (suspend (T) -> Unit),
         crossinline onHttpError: (suspend (code: Int?, HttpException?) -> Unit),
         crossinline onGenericError: (suspend (Throwable?) -> Unit),
-        crossinline onConnectionError: (suspend () -> Unit)
+        crossinline onConnectionError: (suspend () -> Unit),
     ) {
         when (this) {
             is Success<T> -> {

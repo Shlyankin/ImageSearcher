@@ -1,0 +1,24 @@
+package com.shlyankin.imagesearcher.di
+
+import com.shlyankin.data.impl.datasource.PhotosDataSourceImpl
+import com.shlyankin.photos.di.IoDispatcher
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+internal class DataSourceModule {
+
+    @Singleton
+    @Provides
+    fun providePhotosDataSource(
+        repo: com.shlyankin.data.api.PhotoRepo,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    ) =
+        PhotosDataSourceImpl(repo, ioDispatcher)
+
+}

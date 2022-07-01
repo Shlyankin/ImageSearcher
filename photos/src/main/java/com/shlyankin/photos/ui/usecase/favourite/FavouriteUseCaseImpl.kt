@@ -1,13 +1,13 @@
 package com.shlyankin.photos.ui.usecase.favourite
 
-import com.shlyankin.myapplication.repo.favourite.FavouriteRepo
+import com.shlyankin.data.api.FavouriteRepo
 import com.shlyankin.photos.mapper.PhotoMapper
 import com.shlyankin.photos.model.UiPhoto
 import kotlinx.coroutines.flow.map
 
 internal class FavouriteUseCaseImpl(
-    private val favouriteRepo: FavouriteRepo,
-    private val photosMapper: PhotoMapper
+    private val favouriteRepo: com.shlyankin.data.api.FavouriteRepo,
+    private val photosMapper: PhotoMapper,
 ) : FavouriteUseCase {
 
     private val rawFavouritePhotos = favouriteRepo.getAll()

@@ -1,7 +1,7 @@
 package com.shlyankin.view_photo.di
 
-import com.shlyankin.myapplication.repo.favourite.FavouriteRepo
-import com.shlyankin.myapplication.repo.photo.PhotoRepo
+import com.shlyankin.data.api.FavouriteRepo
+import com.shlyankin.data.api.PhotoRepo
 import com.shlyankin.view_photo.mapper.PhotoMapper
 import com.shlyankin.view_photo.ui.usecase.ViewPhotoUseCase
 import com.shlyankin.view_photo.ui.usecase.ViewPhotoUseCaseImpl
@@ -18,9 +18,9 @@ internal class UseCaseModule {
     @Singleton
     @Provides
     fun provideViewPhotoUseCase(
-        photoRepo: PhotoRepo,
-        favouriteRepo: FavouriteRepo,
-        photoMapper: PhotoMapper
+        photoRepo: com.shlyankin.data.api.PhotoRepo,
+        favouriteRepo: com.shlyankin.data.api.FavouriteRepo,
+        photoMapper: PhotoMapper,
     ): ViewPhotoUseCase = ViewPhotoUseCaseImpl(photoRepo, favouriteRepo, photoMapper)
 
 }

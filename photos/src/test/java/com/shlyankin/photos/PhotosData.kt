@@ -1,7 +1,7 @@
 package com.shlyankin.photos
 
-import com.shlyankin.myapplication.database.model.PhotoUrls
-import com.shlyankin.myapplication.database.model.User
+import com.shlyankin.db.database.model.PhotoUrls
+import com.shlyankin.db.database.model.User
 import com.shlyankin.photos.model.UiPhoto
 import java.util.*
 

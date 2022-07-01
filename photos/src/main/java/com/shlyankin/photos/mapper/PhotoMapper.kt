@@ -1,23 +1,23 @@
 package com.shlyankin.photos.mapper
 
-import com.shlyankin.myapplication.database.model.FavouritePhoto
-import com.shlyankin.myapplication.net.model.PhotoResponse
+import com.shlyankin.db.database.model.FavouritePhoto
+import com.shlyankin.net.model.PhotoResponse
 import com.shlyankin.photos.model.UiPhoto
 
 internal class PhotoMapper {
 
     fun convertFromPhotoToUiPhoto(
-        photo: PhotoResponse,
-        favouriteList: List<FavouritePhoto> = emptyList()
+        photo: com.shlyankin.net.model.PhotoResponse,
+        favouriteList: List<FavouritePhoto> = emptyList(),
     ): UiPhoto {
         val favouritePhoto = favouriteList.find { it.id == photo.id }
         return convertFromPhotoToUiPhoto(photo, favouritePhoto?.localPath, favouritePhoto != null)
     }
 
     fun convertFromPhotoToUiPhoto(
-        photo: PhotoResponse,
+        photo: com.shlyankin.net.model.PhotoResponse,
         localPath: String?,
-        isFavourite: Boolean = false
+        isFavourite: Boolean = false,
     ): UiPhoto =
         UiPhoto(
             photo.id,
