@@ -1,7 +1,10 @@
-include ':app'
 rootProject.name = "ImageSearcher"
-include ':domain'
+
+include ':app'
 include ':util'
 include ':photos'
 include ':view_photo'
 include ':navigation'
+
+include ':core:domain-api'
+include ':core:domain'
