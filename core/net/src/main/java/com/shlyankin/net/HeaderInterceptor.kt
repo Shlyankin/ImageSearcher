@@ -1,10 +1,9 @@
 package com.shlyankin.net
 
-import com.shlyankin.myapplication.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
-internal class HeaderInterceptor : Interceptor {
+class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(
             chain.request()

@@ -2,14 +2,14 @@ package com.shlyankin.photos.mapper
 
 import com.shlyankin.db.database.model.FavouritePhoto
 import com.shlyankin.net.model.PhotoResponse
-import com.shlyankin.photos.model.UiPhoto
+import com.shlyankin.photos.model.PresPhoto
 
 internal class PhotoMapper {
 
     fun convertFromPhotoToUiPhoto(
         photo: com.shlyankin.net.model.PhotoResponse,
         favouriteList: List<FavouritePhoto> = emptyList(),
-    ): UiPhoto {
+    ): PresPhoto {
         val favouritePhoto = favouriteList.find { it.id == photo.id }
         return convertFromPhotoToUiPhoto(photo, favouritePhoto?.localPath, favouritePhoto != null)
     }
@@ -18,8 +18,8 @@ internal class PhotoMapper {
         photo: com.shlyankin.net.model.PhotoResponse,
         localPath: String?,
         isFavourite: Boolean = false,
-    ): UiPhoto =
-        UiPhoto(
+    ): PresPhoto =
+        PresPhoto(
             photo.id,
             photo.createdAt,
             photo.description,
@@ -29,13 +29,13 @@ internal class PhotoMapper {
             isFavourite
         )
 
-    fun convertFromFavouritePhotoToUiPhoto(photo: List<FavouritePhoto>): List<UiPhoto> =
+    fun convertFromFavouritePhotoToUiPhoto(photo: List<FavouritePhoto>): List<PresPhoto> =
         photo.map {
             convertFromFavouritePhotoToUiPhoto(it)
         }
 
-    fun convertFromFavouritePhotoToUiPhoto(photo: FavouritePhoto): UiPhoto =
-        UiPhoto(
+    fun convertFromFavouritePhotoToUiPhoto(photo: FavouritePhoto): PresPhoto =
+        PresPhoto(
             photo.id,
             photo.createdAt,
             photo.description,
@@ -45,7 +45,7 @@ internal class PhotoMapper {
             isFavourite = true
         )
 
-    fun convertFromUiPhoto(uiPhoto: UiPhoto): FavouritePhoto {
+    fun convertFromUiPhoto(uiPhoto: PresPhoto): FavouritePhoto {
         return FavouritePhoto(
             uiPhoto.id,
             uiPhoto.createdAt,

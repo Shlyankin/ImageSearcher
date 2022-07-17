@@ -2,10 +2,14 @@ package com.shlyankin.imagesearcher.di
 
 import android.content.Context
 import androidx.room.Room
-import com.shlyankin.data.impl.FavouriteRepoImpl
-import com.shlyankin.data.impl.PhotoRepoImpl
-import com.shlyankin.db.database.ImageSearcherDatabase
-import com.shlyankin.db.database.dao.FavouritePhotoDao
+import com.shlyankin.data.api.FavouriteRepo
+import com.shlyankin.data.api.PhotoRepo
+import com.shlyankin.data.impl.datasource.PhotosDataSource
+import com.shlyankin.data.impl.repo.favourite.FavouriteRepoImpl
+import com.shlyankin.data.impl.repo.photo.PhotoRepoImpl
+import com.shlyankin.db.ImageSearcherDatabase
+import com.shlyankin.db.dao.FavouritePhotoDao
+import com.shlyankin.net.file.FileManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,20 +33,20 @@ internal class DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideFavouritePhotoDao(appDatabase: ImageSearcherDatabase): FavouritePhotoDao =
-        appDatabase.getFavouritePhotoDao()
+    fun provideFavouritePhotoDao(
+        appDatabase: ImageSearcherDatabase,
+    ): FavouritePhotoDao = appDatabase.getFavouritePhotoDao()
 
     @Singleton
     @Provides
     fun providePhotoRepo(
-        unsplashApi: com.shlyankin.net.UnsplashApi,
-    ): com.shlyankin.data.api.PhotoRepo = com.shlyankin.data.impl.PhotoRepoImpl(unsplashApi)
+        dataSource: PhotosDataSource,
+    ): PhotoRepo = PhotoRepoImpl(dataSource)
 
     @Singleton
     @Provides
     fun provideFavouriteRepo(
         favouritePhotoDao: FavouritePhotoDao,
-        fileManager: com.shlyankin.net.file.FileManager,
-    ): com.shlyankin.data.api.FavouriteRepo =
-        com.shlyankin.data.impl.FavouriteRepoImpl(favouritePhotoDao, fileManager)
+        fileManager: FileManager,
+    ): FavouriteRepo = FavouriteRepoImpl(favouritePhotoDao, fileManager)
 }

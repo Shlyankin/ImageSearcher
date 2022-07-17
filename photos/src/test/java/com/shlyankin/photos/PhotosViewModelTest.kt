@@ -6,10 +6,10 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import com.shlyankin.domain.api.FavouriteUseCase
+import com.shlyankin.domain.api.PhotosUseCase
 import com.shlyankin.photos.ui.photos.PhotosViewModelImpl
 import com.shlyankin.photos.ui.photos.adapter.PhotosDiffUtil
-import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCase
-import com.shlyankin.photos.ui.usecase.photo.PhotosUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first

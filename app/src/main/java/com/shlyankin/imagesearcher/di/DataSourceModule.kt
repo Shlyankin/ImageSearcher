@@ -1,6 +1,7 @@
 package com.shlyankin.imagesearcher.di
 
 import com.shlyankin.data.impl.datasource.PhotosDataSourceImpl
+import com.shlyankin.net.UnsplashApi
 import com.shlyankin.photos.di.IoDispatcher
 import dagger.Module
 import dagger.Provides
@@ -16,9 +17,8 @@ internal class DataSourceModule {
     @Singleton
     @Provides
     fun providePhotosDataSource(
-        repo: com.shlyankin.data.api.PhotoRepo,
+        unsplashApi: UnsplashApi,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-    ) =
-        PhotosDataSourceImpl(repo, ioDispatcher)
+    ) = PhotosDataSourceImpl(unsplashApi, ioDispatcher)
 
 }

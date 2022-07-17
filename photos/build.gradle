@@ -39,8 +39,8 @@ android {
 dependencies {
     implementation project(path: ':util')
     implementation project(path: ':core:domain-api')
+    implementation project(path: ':core:domain-models')
     implementation project(path: ':navigation')
-    implementation project(path: ':core:domain-impl')
 
     // todo: remove
     // Androidx

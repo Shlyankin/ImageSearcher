@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import com.shlyankin.photos.databinding.ItemPhotoBinding
-import com.shlyankin.photos.model.UiPhoto
+import com.shlyankin.photos.model.PresPhoto
 
 internal class PhotosAdapter(
-    private val itemClickListener: (photo: UiPhoto) -> Unit,
-    private val onFavouriteClickListener: (photo: UiPhoto) -> Unit
-) : PagingDataAdapter<UiPhoto, PhotoViewHolder>(PhotosDiffUtil()) {
+    private val itemClickListener: (photo: PresPhoto) -> Unit,
+    private val onFavouriteClickListener: (photo: PresPhoto) -> Unit,
+) : PagingDataAdapter<PresPhoto, PhotoViewHolder>(PhotosDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         return PhotoViewHolder(

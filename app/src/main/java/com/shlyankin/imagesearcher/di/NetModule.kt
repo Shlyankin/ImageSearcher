@@ -2,6 +2,8 @@ package com.shlyankin.imagesearcher.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.shlyankin.net.FileApi
+import com.shlyankin.net.HeaderInterceptor
 import com.shlyankin.net.UnsplashApi
 import com.shlyankin.util.utils.DEFAULT_DATETIME_FORMAT
 import dagger.Module
@@ -45,7 +47,7 @@ internal class NetModule {
     @Provides
     fun provideOkHttpClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        headerInterceptor: HeaderInterceptor
+        headerInterceptor: HeaderInterceptor,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)

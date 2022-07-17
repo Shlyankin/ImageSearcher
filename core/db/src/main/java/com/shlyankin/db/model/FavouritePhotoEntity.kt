@@ -16,4 +16,5 @@ data class FavouritePhotoEntity(
     @Embedded(prefix = "user")
     val user: UserEntity,
     val localPath: String,
+    val addedInFavouriteAt: Date = Date(),
 )

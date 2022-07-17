@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FavouritePhotoDao : BaseDao<FavouritePhotoEntity> {
 
-    @Query("SELECT * FROM FavouritePhotoEntity")
+    @Query("SELECT * FROM FavouritePhotoEntity ORDER BY addedInFavouriteAt DESC")
     fun getAll(): Flow<List<FavouritePhotoEntity>>
 
     @Query("DELETE FROM FavouritePhotoEntity where id = :id")

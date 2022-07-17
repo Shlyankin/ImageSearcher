@@ -2,13 +2,13 @@ package com.shlyankin.data.impl.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.shlyankin.myapplication.net.UnsplashApi
-import com.shlyankin.myapplication.net.model.PhotoResponse
+import com.shlyankin.net.UnsplashApi
+import com.shlyankin.net.model.PhotoResponse
 import com.shlyankin.util.net.safeApiCall
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-internal class PhotosPagingSource(
+class PhotosPagingSource(
     private val api: UnsplashApi,
     private val ioDispatcher: CoroutineDispatcher,
 ) : PagingSource<Int, PhotoResponse>() {

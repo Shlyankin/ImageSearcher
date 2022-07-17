@@ -3,8 +3,8 @@ package com.shlyankin.data.impl.datasource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.shlyankin.myapplication.net.UnsplashApi
-import com.shlyankin.myapplication.net.model.PhotoResponse
+import com.shlyankin.net.UnsplashApi
+import com.shlyankin.net.model.PhotoResponse
 import com.shlyankin.util.net.ResultWrapper
 import com.shlyankin.util.net.safeApiCall
 import kotlinx.coroutines.CoroutineDispatcher

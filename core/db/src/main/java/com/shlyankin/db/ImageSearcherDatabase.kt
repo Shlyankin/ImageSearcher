@@ -15,6 +15,6 @@ import com.shlyankin.db.model.FavouritePhotoEntity
     version = 10
 )
 @TypeConverters(DateConverter::class)
-internal abstract class ImageSearcherDatabase : RoomDatabase() {
+abstract class ImageSearcherDatabase : RoomDatabase() {
     abstract fun getFavouritePhotoDao(): FavouritePhotoDao
 }

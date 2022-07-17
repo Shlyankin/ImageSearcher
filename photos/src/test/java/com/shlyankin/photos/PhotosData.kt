@@ -2,10 +2,10 @@ package com.shlyankin.photos
 
 import com.shlyankin.db.database.model.PhotoUrls
 import com.shlyankin.db.database.model.User
-import com.shlyankin.photos.model.UiPhoto
+import com.shlyankin.photos.model.PresPhoto
 import java.util.*
 
-internal val uiPhoto1 = UiPhoto(
+internal val uiPhoto1 = PresPhoto(
     "1",
     Date(),
     "Hello, world",
@@ -15,7 +15,7 @@ internal val uiPhoto1 = UiPhoto(
     isFavourite = false
 )
 
-internal val uiPhoto2 = UiPhoto(
+internal val uiPhoto2 = PresPhoto(
     "2",
     Date(),
     "Hello, world",
@@ -25,7 +25,7 @@ internal val uiPhoto2 = UiPhoto(
     isFavourite = false
 )
 
-internal val uiPhoto3 = UiPhoto(
+internal val uiPhoto3 = PresPhoto(
     "3",
     Date(),
     "Hello, world",
@@ -35,7 +35,7 @@ internal val uiPhoto3 = UiPhoto(
     isFavourite = false
 )
 
-internal val uiPhoto4 = UiPhoto(
+internal val uiPhoto4 = PresPhoto(
     "4",
     Date(),
     "Hello, world",

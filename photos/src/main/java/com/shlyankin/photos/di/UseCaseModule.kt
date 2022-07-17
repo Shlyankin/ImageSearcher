@@ -2,11 +2,11 @@ package com.shlyankin.photos.di
 
 import com.shlyankin.data.api.FavouriteRepo
 import com.shlyankin.data.impl.datasource.PhotosDataSourceImpl
+import com.shlyankin.domain.api.FavouriteUseCase
+import com.shlyankin.domain.api.PhotosUseCase
+import com.shlyankin.myapplication.FavouriteUseCaseImpl
+import com.shlyankin.myapplication.PhotosUseCaseImpl
 import com.shlyankin.photos.mapper.PhotoMapper
-import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCase
-import com.shlyankin.photos.ui.usecase.favourite.FavouriteUseCaseImpl
-import com.shlyankin.photos.ui.usecase.photo.PhotosUseCase
-import com.shlyankin.photos.ui.usecase.photo.PhotosUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

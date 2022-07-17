@@ -3,7 +3,7 @@ package com.shlyankin.photos.ui.photos.adapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shlyankin.photos.R
 import com.shlyankin.photos.databinding.ItemPhotoBinding
-import com.shlyankin.photos.model.UiPhoto
+import com.shlyankin.photos.model.PresPhoto
 import com.shlyankin.util.glide.GlideApp
 import com.shlyankin.util.utils.alternativeUri
 
@@ -33,9 +33,9 @@ internal class PhotoViewHolder(
     }
 
     fun bind(
-        photo: UiPhoto,
-        itemClickListener: (photo: UiPhoto) -> Unit,
-        onFavouriteClickListener: (photo: UiPhoto) -> Unit
+        photo: PresPhoto,
+        itemClickListener: (photo: PresPhoto) -> Unit,
+        onFavouriteClickListener: (photo: PresPhoto) -> Unit,
     ) {
         viewBinding.run {
             root.setOnClickListener { itemClickListener.invoke(photo) }

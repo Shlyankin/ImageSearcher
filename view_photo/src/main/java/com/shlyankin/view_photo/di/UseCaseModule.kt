@@ -18,7 +18,7 @@ internal class UseCaseModule {
     @Singleton
     @Provides
     fun provideViewPhotoUseCase(
-        photoRepo: com.shlyankin.data.api.PhotoRepo,
+        photoRepo: PhotoRepo,
         favouriteRepo: com.shlyankin.data.api.FavouriteRepo,
         photoMapper: PhotoMapper,
     ): ViewPhotoUseCase = ViewPhotoUseCaseImpl(photoRepo, favouriteRepo, photoMapper)

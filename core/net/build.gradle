@@ -3,12 +3,19 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikeys.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 32
+
+        buildConfigField("String", "UNSPLASH_ACCESS_KEY", apikeyProperties['unsplash.AccessKey'])
+        buildConfigField("String", "UNSPLASH_SECRET_KEY", apikeyProperties['unsplash.SecretKey'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -31,8 +38,13 @@ android {
 
 dependencies {
 
+    implementation project(path: ":util")
+
     //Gson
     implementation "com.google.code.gson:gson:2.8.6"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
