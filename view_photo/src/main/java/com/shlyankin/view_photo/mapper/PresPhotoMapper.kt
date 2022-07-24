@@ -1,13 +1,13 @@
-package com.shlyankin.photos.mapper
+package com.shlyankin.view_photo.mapper
 
 import com.shlyankin.domain.models.PhotoDomain
 import com.shlyankin.domain.models.PhotoUrlsDomain
 import com.shlyankin.domain.models.ProfileImageDomain
 import com.shlyankin.domain.models.UserDomain
-import com.shlyankin.photos.model.PresPhoto
-import com.shlyankin.photos.model.PresPhotoUrls
-import com.shlyankin.photos.model.PresProfileImage
-import com.shlyankin.photos.model.PresUser
+import com.shlyankin.view_photo.model.PresPhoto
+import com.shlyankin.view_photo.model.PresPhotoUrls
+import com.shlyankin.view_photo.model.PresProfileImage
+import com.shlyankin.view_photo.model.PresUser
 
 
 fun PresPhoto.toDomain() = PhotoDomain(

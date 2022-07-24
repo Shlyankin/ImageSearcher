@@ -8,4 +8,6 @@ data class PhotoDomain(
     val description: String?,
     val urls: PhotoUrlsDomain,
     val user: UserDomain,
+    val isFavourite: Boolean = false,
+    val localPath: String? = null,
 )

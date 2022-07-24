@@ -4,7 +4,10 @@ import com.shlyankin.db.model.FavouritePhotoEntity
 import com.shlyankin.db.model.PhotoUrlsEntity
 import com.shlyankin.db.model.ProfileImageEntity
 import com.shlyankin.db.model.UserEntity
-import com.shlyankin.domain.models.*
+import com.shlyankin.domain.models.PhotoDomain
+import com.shlyankin.domain.models.PhotoUrlsDomain
+import com.shlyankin.domain.models.ProfileImageDomain
+import com.shlyankin.domain.models.UserDomain
 import com.shlyankin.net.model.PhotoResponse
 import com.shlyankin.net.model.PhotoUrls
 import com.shlyankin.net.model.ProfileImage
@@ -20,20 +23,12 @@ fun PhotoResponse.toDomain(): PhotoDomain = PhotoDomain(
     id, createdAt, description, urls.toDomain(), user.toDomain()
 )
 
-fun FavouritePhotoEntity.toFavouriteDomain() = FavouritePhotoDomain(
-    id, createdAt, description, urls.toDomain(), user.toDomain(), localPath
-)
-
-fun FavouritePhotoDomain.toEntity(): FavouritePhotoEntity = FavouritePhotoEntity(
-    id, createdAt, description, urls.toEntity(), user.toEntity(), localPath
+fun FavouritePhotoEntity.toDomain() = PhotoDomain(
+    id, createdAt, description, urls.toDomain(), user.toDomain(), isFavourite = true, localPath
 )
 
 fun PhotoDomain.toEntity(localPath: String): FavouritePhotoEntity = FavouritePhotoEntity(
     id, createdAt, description, urls.toEntity(), user.toEntity(), localPath
-)
-
-fun PhotoResponse.toFavouriteDomain(): FavouritePhotoDomain = FavouritePhotoDomain(
-    id, createdAt, description, urls.toDomain(), user.toDomain(), ""
 )
 
 // Photo urls

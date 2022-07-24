@@ -12,7 +12,7 @@ import com.shlyankin.util.utils.alternativeUri
 import com.shlyankin.util.utils.observe
 import com.shlyankin.view_photo.R
 import com.shlyankin.view_photo.databinding.FViewPhotoBinding
-import com.shlyankin.view_photo.model.UiPhoto
+import com.shlyankin.view_photo.model.PresPhoto
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,7 +58,7 @@ class ViewPhotoFragment : BindingFragment<FViewPhotoBinding>() {
         }
     }
 
-    private fun setPhotoInformation(uiPhoto: UiPhoto) {
+    private fun setPhotoInformation(uiPhoto: PresPhoto) {
         binding.run {
             author.text = getString(R.string.author, uiPhoto.user.name)
             photoDescription.text =
@@ -74,18 +74,18 @@ class ViewPhotoFragment : BindingFragment<FViewPhotoBinding>() {
         }
     }
 
-    private fun loadImages(uiPhoto: UiPhoto) {
+    private fun loadImages(uiPhoto: PresPhoto) {
         binding.run {
             if (photo.drawable == null) {
                 // load picture
                 GlideApp.with(root)
                     .load(uiPhoto.localPath)
-                    .alternativeUri(root, uiPhoto.url)
+                    .alternativeUri(root, uiPhoto.urls.full)
                     .into(photo)
             }
             if (authorAvatar.drawable == null) {
                 // load avatar
-                GlideApp.with(root).load(uiPhoto.user.photoUrl)
+                GlideApp.with(root).load(uiPhoto.user.profileImage?.medium)
                     .error(R.drawable.ic_person_outline)
                     .into(authorAvatar)
             }

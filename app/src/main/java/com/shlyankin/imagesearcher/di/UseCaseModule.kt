@@ -1,12 +1,13 @@
-package com.shlyankin.photos.di
+package com.shlyankin.imagesearcher.di
 
 import com.shlyankin.data.api.FavouriteRepo
-import com.shlyankin.data.impl.datasource.PhotosDataSourceImpl
+import com.shlyankin.data.api.PhotoRepo
 import com.shlyankin.domain.api.FavouriteUseCase
 import com.shlyankin.domain.api.PhotosUseCase
+import com.shlyankin.domain.api.ViewPhotoUseCase
 import com.shlyankin.myapplication.FavouriteUseCaseImpl
 import com.shlyankin.myapplication.PhotosUseCaseImpl
-import com.shlyankin.photos.mapper.PhotoMapper
+import com.shlyankin.myapplication.ViewPhotoUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,15 +21,19 @@ internal class UseCaseModule {
     @Singleton
     @Provides
     fun providePhotoUseCase(
-        photosDataSource: PhotosDataSourceImpl,
-        photosMapper: PhotoMapper,
-    ): PhotosUseCase = PhotosUseCaseImpl(photosDataSource, photosMapper)
+        photoRepo: PhotoRepo,
+    ): PhotosUseCase = PhotosUseCaseImpl(photoRepo)
 
     @Singleton
     @Provides
     fun provideFavouriteUseCase(
-        favouriteRepo: com.shlyankin.data.api.FavouriteRepo,
-        photosMapper: PhotoMapper,
-    ): FavouriteUseCase = FavouriteUseCaseImpl(favouriteRepo, photosMapper)
+        favouriteRepo: FavouriteRepo,
+    ): FavouriteUseCase = FavouriteUseCaseImpl(favouriteRepo)
 
+    @Singleton
+    @Provides
+    fun provideViewPhotoUseCase(
+        photoRepo: PhotoRepo,
+        favouriteRepo: FavouriteRepo,
+    ): ViewPhotoUseCase = ViewPhotoUseCaseImpl(photoRepo, favouriteRepo)
 }

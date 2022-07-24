@@ -7,7 +7,7 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -37,5 +37,6 @@ dependencies {
     implementation project(path: ':util')
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:3.0.1"
-
+    // DI
+    implementation "com.google.dagger:hilt-android:2.37"
 }

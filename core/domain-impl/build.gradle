@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
@@ -38,7 +38,7 @@ dependencies {
     implementation project(path: ':core:data-api')
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:3.0.1"
 }

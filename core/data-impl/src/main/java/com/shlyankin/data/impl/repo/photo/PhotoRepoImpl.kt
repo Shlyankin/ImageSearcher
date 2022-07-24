@@ -5,13 +5,14 @@ import androidx.paging.map
 import com.shlyankin.data.api.PhotoRepo
 import com.shlyankin.data.impl.datasource.PhotosDataSource
 import com.shlyankin.data.impl.mapper.toDomain
+import com.shlyankin.db.dao.FavouritePhotoDao
 import com.shlyankin.domain.models.PhotoDomain
-import com.shlyankin.net.model.PhotoResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class PhotoRepoImpl(
     private val photosDataSource: PhotosDataSource,
+    private val favouritePhotoDao: FavouritePhotoDao,
 ) : PhotoRepo {
 
     override fun getPhotos(): Flow<PagingData<PhotoDomain>> {
@@ -24,11 +25,9 @@ class PhotoRepoImpl(
 
     override suspend fun getPhoto(
         photoId: String,
-    ): PhotoDomain? {
-        var result: PhotoResponse? = null
-        photosDataSource.getPhoto(photoId).onSuccess { photo ->
-            result = photo
+    ): Flow<PhotoDomain?> {
+        return favouritePhotoDao.getFlow(photoId).map { favourite ->
+            favourite?.toDomain() ?: photosDataSource.getPhoto(photoId).takeValue()?.toDomain()
         }
-        return result?.toDomain()
     }
 }

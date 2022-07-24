@@ -8,10 +8,10 @@ import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.io.*
 
-internal class FileManagerImpl(
+class FileManagerImpl(
     private val fileApi: FileApi,
     private val context: Context,
-    private val ioDispatcher: CoroutineDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) : FileManager {
 
     private val downloadQueue = mutableMapOf<String, Job>()

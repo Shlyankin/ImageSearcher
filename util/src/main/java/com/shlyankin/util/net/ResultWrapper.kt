@@ -25,6 +25,8 @@ sealed class ResultWrapper<out T> {
 
     object NetworkError : ResultWrapper<Nothing>()
 
+    fun takeValue(): T? = if (this is Success) value else null
+
     suspend inline fun onSuccess(crossinline onSuccess: suspend (T) -> Unit): ResultWrapper<T> {
         if (this is Success) {
             onSuccess.invoke(this.value)

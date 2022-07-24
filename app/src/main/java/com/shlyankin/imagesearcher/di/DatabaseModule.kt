@@ -41,7 +41,8 @@ internal class DatabaseModule {
     @Provides
     fun providePhotoRepo(
         dataSource: PhotosDataSource,
-    ): PhotoRepo = PhotoRepoImpl(dataSource)
+        favouritePhotoDao: FavouritePhotoDao,
+    ): PhotoRepo = PhotoRepoImpl(dataSource, favouritePhotoDao)
 
     @Singleton
     @Provides

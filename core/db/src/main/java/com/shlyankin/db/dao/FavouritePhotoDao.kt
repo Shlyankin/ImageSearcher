@@ -20,4 +20,7 @@ interface FavouritePhotoDao : BaseDao<FavouritePhotoEntity> {
     @Query("SELECT * FROM FavouritePhotoEntity WHERE id=:id")
     suspend fun get(id: String): FavouritePhotoEntity?
 
+    @Query("SELECT * FROM FavouritePhotoEntity WHERE id=:photoId")
+    fun getFlow(photoId: String): Flow<FavouritePhotoEntity?>
+
 }

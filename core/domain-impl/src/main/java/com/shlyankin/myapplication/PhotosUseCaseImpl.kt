@@ -3,7 +3,7 @@ package com.shlyankin.myapplication
 import com.shlyankin.data.api.PhotoRepo
 import com.shlyankin.domain.api.PhotosUseCase
 
-internal class PhotosUseCaseImpl(
+class PhotosUseCaseImpl(
     photoRepo: PhotoRepo,
 ) : PhotosUseCase {
 

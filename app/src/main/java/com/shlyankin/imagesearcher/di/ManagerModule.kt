@@ -1,6 +1,8 @@
 package com.shlyankin.imagesearcher.di
 
 import android.content.Context
+import com.shlyankin.net.file.FileManager
+import com.shlyankin.net.file.FileManagerImpl
 import com.shlyankin.photos.di.IoDispatcher
 import dagger.Module
 import dagger.Provides
@@ -20,6 +22,5 @@ internal class ManagerModule {
         fileApi: com.shlyankin.net.FileApi,
         @ApplicationContext context: Context,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-    ): com.shlyankin.net.file.FileManager =
-        com.shlyankin.net.file.FileManagerImpl(fileApi, context, ioDispatcher)
+    ): FileManager = FileManagerImpl(fileApi, context, ioDispatcher)
 }

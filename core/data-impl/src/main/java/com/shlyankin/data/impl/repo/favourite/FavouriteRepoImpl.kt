@@ -2,10 +2,9 @@ package com.shlyankin.data.impl.repo.favourite
 
 import android.util.Log
 import com.shlyankin.data.api.FavouriteRepo
+import com.shlyankin.data.impl.mapper.toDomain
 import com.shlyankin.data.impl.mapper.toEntity
-import com.shlyankin.data.impl.mapper.toFavouriteDomain
 import com.shlyankin.db.dao.FavouritePhotoDao
-import com.shlyankin.domain.models.FavouritePhotoDomain
 import com.shlyankin.domain.models.PhotoDomain
 import com.shlyankin.net.file.FileManager
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +27,7 @@ class FavouriteRepoImpl(
         favouritePhotoDao.insertReplace(photo.toEntity(localPath))
     }
 
-    override suspend fun deleteFromFavourite(photo: FavouritePhotoDomain) {
+    override suspend fun deleteFromFavourite(photo: PhotoDomain) {
         fileManager.stopDownloadFile(photo.urls.full)
         favouritePhotoDao.get(photo.id)?.let {
             try {
@@ -58,15 +57,15 @@ class FavouriteRepoImpl(
         favouritePhotoDao.deleteById(photoId)
     }
 
-    override fun getAll(): Flow<List<FavouritePhotoDomain>> {
+    override fun getAll(): Flow<List<PhotoDomain>> {
         return favouritePhotoDao.getAll().map { photos ->
             photos.map { photo ->
-                photo.toFavouriteDomain()
+                photo.toDomain()
             }
         }
     }
 
-    override suspend fun get(id: String): FavouritePhotoDomain? {
-        return favouritePhotoDao.get(id)?.toFavouriteDomain()
+    override suspend fun get(id: String): PhotoDomain? {
+        return favouritePhotoDao.get(id)?.toDomain()
     }
 }

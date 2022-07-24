@@ -1,5 +1,6 @@
 package com.shlyankin.imagesearcher.di
 
+import com.shlyankin.data.impl.datasource.PhotosDataSource
 import com.shlyankin.data.impl.datasource.PhotosDataSourceImpl
 import com.shlyankin.net.UnsplashApi
 import com.shlyankin.photos.di.IoDispatcher
@@ -19,6 +20,6 @@ internal class DataSourceModule {
     fun providePhotosDataSource(
         unsplashApi: UnsplashApi,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-    ) = PhotosDataSourceImpl(unsplashApi, ioDispatcher)
+    ): PhotosDataSource = PhotosDataSourceImpl(unsplashApi, ioDispatcher)
 
 }
